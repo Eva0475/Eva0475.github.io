@@ -351,6 +351,7 @@ dialog::backdrop{background:rgba(30,28,26,.7)}
       <li><a href="#book" data-i18n="nav.book">Book</a></li>
       <li><a href="#reviews" data-i18n="nav.reviews">Reviews</a></li>
       <li><a href="#contact" data-i18n="nav.connect">Connect</a></li>
+      <li><a href="portfolio.html" data-i18n="nav.portfolio">Portfolio</a></li>
     </ul>
     <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navlinks" data-i18n="nav.menu">Menu</button>
     <div class="langs" role="group" aria-label="Language">
@@ -636,6 +637,7 @@ document.documentElement.classList.add('js');
 /* ───────── CONTENT (EN / ID / ZH) ───────── */
 const T = {
 en:{
+  'nav.portfolio':'Portfolio',
   'contact.ig1':'Instagram · Strategic','contact.ig2':'Instagram · Creative','contact.yt':'YouTube','contact.lynk':'Lynk',
   phrases:['HR Transformation Strategist','AI Automation Architect','Human–AI Bridge Builder','Systems Thinker · ENTJ-A','Creative Work · EYS Studio','n8n · Notion · Claude · Jakarta'],
   skip:'Skip to content',
@@ -699,6 +701,7 @@ en:{
   ]
 },
 id:{
+  'nav.portfolio':'Portofolio',
   'contact.ig1':'Instagram · Strategis','contact.ig2':'Instagram · Kreatif','contact.yt':'YouTube','contact.lynk':'Lynk',
   phrases:['Konsultan Transformasi HR','Arsitek Otomasi AI','Jembatan Manusia–AI','Pemikir Sistemik · ENTJ-A','Karya Kreatif · Studio EYS','n8n · Notion · Claude · Jakarta'],
   skip:'Langsung ke konten',
@@ -762,6 +765,7 @@ id:{
   ]
 },
 zh:{
+  'nav.portfolio':'作品集',
   'contact.ig1':'Instagram · 战略','contact.ig2':'Instagram · 创意','contact.yt':'YouTube','contact.lynk':'Lynk',
   phrases:['HR转型顾问','AI自动化架构师','人机桥梁构建者','系统思维者 · ENTJ-A','创意作品 · EYS工作室','n8n · Notion · Claude · 雅加达'],
   skip:'跳至正文',
@@ -945,7 +949,7 @@ function navMode(){
   nav.dataset.mode = mode;
   let cur = null;
   ['about','services','agents','book','reviews','contact'].forEach(id => { const r = document.getElementById(id).getBoundingClientRect(); if (r.top < innerHeight*.4) cur = id; });
-  $$('#navlinks a').forEach(a => a.setAttribute('aria-current', String(a.getAttribute('href') === '#' + cur)));
+  $$('#navlinks a[href^="#"]').forEach(a => a.setAttribute('aria-current', String(a.getAttribute('href') === '#' + cur)));
 }
 addEventListener('scroll', navMode, {passive:true}); navMode();
 
