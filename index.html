@@ -335,6 +335,20 @@ dialog::backdrop{background:rgba(30,28,26,.7)}
   .js .reveal{opacity:1;transform:none}
 }
 
+/* background music toggle */
+.music{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;margin-right:var(--space-2);border:1px solid color-mix(in srgb,currentColor 35%,transparent);border-radius:var(--radius-pill);background:none;color:inherit;opacity:.85}
+.music:hover{opacity:1}
+.music svg{width:16px;height:14px;fill:currentColor}
+.music rect{transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(.35)}
+.music[aria-pressed="true"]{background:var(--brass);border-color:var(--brass);color:var(--charcoal);opacity:1}
+.music[aria-pressed="true"] rect{animation:eq 1.1s ease-in-out infinite alternate}
+.music[aria-pressed="true"] rect:nth-child(2){animation-delay:-.4s}.music[aria-pressed="true"] rect:nth-child(3){animation-delay:-.75s}.music[aria-pressed="true"] rect:nth-child(4){animation-delay:-.2s}
+@keyframes eq{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
+@media (prefers-reduced-motion:reduce){.music[aria-pressed="true"] rect{animation:none;transform:none}}
+.langs button{white-space:nowrap}
+@media (max-width:420px){ .music{width:30px;height:30px;margin-right:4px} .langs button{padding:6px 6px} }
+@media (max-width:420px){ .brand{font-size:18px} .menu-btn{padding:0 10px} .nav-inner{padding:0 12px;gap:6px} }
+
 </style>
 </head>
 <body>
@@ -354,6 +368,7 @@ dialog::backdrop{background:rgba(30,28,26,.7)}
       <li><a href="portfolio.html" data-i18n="nav.portfolio">Portfolio</a></li>
     </ul>
     <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navlinks" data-i18n="nav.menu">Menu</button>
+    <button class="music" id="musicBtn" type="button" aria-pressed="false"><svg viewBox="0 0 20 16" aria-hidden="true"><rect x="1" y="6" width="2.4" height="6" rx="1.2"/><rect x="6" y="3" width="2.4" height="10" rx="1.2"/><rect x="11" y="5" width="2.4" height="7" rx="1.2"/><rect x="16" y="2" width="2.4" height="11" rx="1.2"/></svg></button>
     <div class="langs" role="group" aria-label="Language">
       <button data-lang="en" aria-pressed="true" title="English">EN</button>
       <button data-lang="id" aria-pressed="false" title="Bahasa Indonesia">ID</button>
@@ -632,6 +647,163 @@ dialog::backdrop{background:rgba(30,28,26,.7)}
 </dialog>
 
 <script>
+/* EYS Ambient — original generative soundscapes, made in the browser (no audio files, no licences).
+   preset 'garden' = website (warm pads, rain, garden stream, wind chimes)
+   preset 'focus'  = Athena OS (low drone, darker pads, soft rain on glass, sparse echoing blips) */
+(function(){
+const hz = n => 440 * Math.pow(2, (n - 69) / 12);           // MIDI note → Hz
+const PRESETS = {
+  garden: {
+    chords: [[50,57,61,64,66],[47,54,57,61,62],[43,50,54,57,59],[45,52,57,59,64]], // Dmaj9 Bm9 Gmaj9 A(add9)
+    chordSec: 13, padType: 'triangle', padCut: 950, padGain: .032,
+    drone: null, water: true, rain: { hiss: .05, drops: [25, 110], dropGain: .07 },
+    sparkle: { notes: [74,76,78,81,83,86], every: [2.4, 6.5], gain: .05, decay: 3.2, type: 'sine', echo: false },
+    master: 1.4
+  },
+  focus: {
+    chords: [[45,52,55,59,60],[41,48,52,55,57],[48,55,59,62,64],[43,50,55,59,64]], // Am9 Fmaj9 Cmaj9 G6/9
+    chordSec: 16, padType: 'sawtooth', padCut: 520, padGain: .02,
+    drone: [33, 40], water: false, rain: { hiss: .03, drops: [70, 260], dropGain: .045 },
+    sparkle: { notes: [69,72,74,76,79,81], every: [1.6, 4.2], gain: .028, decay: .9, type: 'triangle', echo: true },
+    master: 1.35
+  }
+};
+
+function Ambient(name){
+  const P = PRESETS[name] || PRESETS.garden;
+  let ctx, master, wet, timers = [], live = [], running = false;
+
+  function impulse(sec){
+    const len = ctx.sampleRate * sec, buf = ctx.createBuffer(2, len, ctx.sampleRate);
+    for (let c = 0; c < 2; c++){ const d = buf.getChannelData(c);
+      for (let i = 0; i < len; i++) d[i] = (Math.random()*2-1) * Math.pow(1 - i/len, 3); }
+    return buf;
+  }
+  function noise(sec){
+    const len = ctx.sampleRate * sec, buf = ctx.createBuffer(1, len, ctx.sampleRate), d = buf.getChannelData(0);
+    let last = 0; for (let i = 0; i < len; i++){ const w = Math.random()*2-1; last = (last + .02*w) / 1.02; d[i] = last * 3.5; } // brown noise
+    return buf;
+  }
+  function build(){
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    master = ctx.createGain(); master.gain.value = 0;
+    const comp = ctx.createDynamicsCompressor(); comp.threshold.value = -20; comp.ratio.value = 3;
+    master.connect(comp).connect(ctx.destination);
+    const verb = ctx.createConvolver(); verb.buffer = impulse(name === 'focus' ? 5 : 4);
+    wet = ctx.createGain(); wet.gain.value = .55; wet.connect(verb).connect(master);
+  }
+  const out = (node, dry, send) => { const g1 = ctx.createGain(), g2 = ctx.createGain(); g1.gain.value = dry; g2.gain.value = send;
+    node.connect(g1).connect(master); node.connect(g2).connect(wet); };
+
+  function chord(i){
+    if (!running) return;
+    const t = ctx.currentTime, dur = P.chordSec, fade = dur * .38;
+    const filt = ctx.createBiquadFilter(); filt.type = 'lowpass'; filt.frequency.value = P.padCut; filt.Q.value = .4;
+    const g = ctx.createGain(); g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(P.padGain, t + fade); g.gain.setValueAtTime(P.padGain, t + dur - .01);
+    g.gain.linearRampToValueAtTime(0, t + dur + fade);
+    filt.connect(g); out(g, .6, .7);
+    const oscs = [];
+    P.chords[i % P.chords.length].forEach(n => [-3, 3].forEach(cents => {
+      const o = ctx.createOscillator(); o.type = P.padType; o.frequency.value = hz(n); o.detune.value = cents + (Math.random()*4-2);
+      o.connect(filt); o.start(t); o.stop(t + dur + fade + .1); oscs.push(o); }));
+    live.push(...oscs);
+    timers.push(setTimeout(() => chord(i + 1), dur * 1000));
+  }
+  function drone(){
+    if (!P.drone) return;
+    const filt = ctx.createBiquadFilter(); filt.type = 'lowpass'; filt.frequency.value = 260; filt.Q.value = 2;
+    const lfo = ctx.createOscillator(), lg = ctx.createGain(); lfo.frequency.value = .035; lg.gain.value = 140;
+    lfo.connect(lg).connect(filt.frequency); lfo.start();
+    const g = ctx.createGain(); g.gain.value = .05; filt.connect(g); out(g, .8, .4);
+    P.drone.forEach(n => { const o = ctx.createOscillator(); o.type = 'sawtooth'; o.frequency.value = hz(n); o.connect(filt); o.start(); live.push(o); });
+    live.push(lfo);
+  }
+  function water(){
+    if (!P.water) return;
+    [[650, .02, .07], [1500, .011, .13]].forEach(([f, gv, rate]) => {
+      const src = ctx.createBufferSource(); src.buffer = noise(6); src.loop = true;
+      const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = f; bp.Q.value = .8;
+      const lfo = ctx.createOscillator(), lg = ctx.createGain(); lfo.frequency.value = rate; lg.gain.value = f * .35;
+      lfo.connect(lg).connect(bp.frequency); lfo.start();
+      const g = ctx.createGain(); g.gain.value = gv; src.connect(bp).connect(g); out(g, 1, .25);
+      src.start(); live.push(src, lfo); });
+  }
+  function rain(){
+    if (!P.rain) return;
+    const R = P.rain, len = ctx.sampleRate * 5, buf = ctx.createBuffer(1, len, ctx.sampleRate), d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = Math.random()*2 - 1;                 // white noise
+    const src = ctx.createBufferSource(); src.buffer = buf; src.loop = true;
+    const hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 900;
+    const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 7000;
+    const g = ctx.createGain(); g.gain.value = R.hiss;
+    const swell = ctx.createOscillator(), sg = ctx.createGain(); swell.frequency.value = .05; sg.gain.value = R.hiss * .35;
+    swell.connect(sg).connect(g.gain); swell.start();                           // rain gently comes and goes
+    src.connect(hp).connect(lp).connect(g); out(g, .9, .3); src.start(); live.push(src, swell);
+    const drop = () => {                                                         // single droplets on leaves and stone
+      if (!running) return;
+      const t = ctx.currentTime + .03, s = ctx.createBufferSource(); s.buffer = buf;
+      const bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 1800 + Math.random()*4200; bp.Q.value = 6 + Math.random()*8;
+      const dg = ctx.createGain(), v = R.dropGain * (.3 + Math.random()*.7);
+      dg.gain.setValueAtTime(v, t); dg.gain.exponentialRampToValueAtTime(.0001, t + .03 + Math.random()*.06);
+      s.connect(bp).connect(dg); out(dg, .7, .5); s.start(t, Math.random()*4, .12);
+      const [a, b] = R.drops; timers.push(setTimeout(drop, a + Math.random()*(b - a)));
+    };
+    drop();
+  }
+  function sparkle(){
+    if (!running) return;
+    const S = P.sparkle, t = ctx.currentTime + .05, n = S.notes[Math.floor(Math.random()*S.notes.length)];
+    const g = ctx.createGain(); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(S.gain * (.6 + Math.random()*.4), t + .006);
+    g.gain.exponentialRampToValueAtTime(.0001, t + S.decay);
+    [1, 2.01].forEach((m, k) => { const o = ctx.createOscillator(); o.type = k ? 'sine' : S.type; o.frequency.value = hz(n) * m;
+      const og = ctx.createGain(); og.gain.value = k ? .25 : 1; o.connect(og).connect(g); o.start(t); o.stop(t + S.decay + .1); });
+    if (S.echo){ const d = ctx.createDelay(); d.delayTime.value = .42; const fb = ctx.createGain(); fb.gain.value = .38;
+      const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 1800;
+      g.connect(d); d.connect(lp).connect(fb).connect(d); out(lp, .5, .5); }
+    out(g, .45, 1);
+    const [a, b] = S.every; timers.push(setTimeout(sparkle, (a + Math.random()*(b - a)) * 1000));
+  }
+
+  return {
+    get on(){ return running; },
+    start(){
+      if (running) return; if (!ctx) build();
+      ctx.resume(); running = true; chord(0); drone(); water(); rain(); timers.push(setTimeout(sparkle, 1800));
+      const t = ctx.currentTime; master.gain.cancelScheduledValues(t); master.gain.setValueAtTime(master.gain.value, t);
+      master.gain.linearRampToValueAtTime(P.master, t + 3);
+    },
+    stop(){
+      if (!running) return; running = false; timers.forEach(clearTimeout); timers = [];
+      const t = ctx.currentTime; master.gain.cancelScheduledValues(t); master.gain.setValueAtTime(master.gain.value, t);
+      master.gain.linearRampToValueAtTime(0, t + 1.5);
+      const dead = live; live = [];
+      setTimeout(() => { dead.forEach(o => { try { o.stop(); } catch(e){} }); if (!running) ctx.suspend(); }, 1700);
+    },
+    pause(){ if (ctx && running) ctx.suspend(); },
+    resume(){ if (ctx && running) ctx.resume(); }
+  };
+}
+
+/* Button wiring: off by default; remembers the choice; starts on the first click/tap/key after load
+   when it was left on (browsers never allow sound before the visitor interacts). */
+const LBL = { en: ['Play background music', 'Pause background music'], id: ['Putar musik latar', 'Jeda musik latar'], zh: ['播放背景音乐', '暂停背景音乐'] };
+window.EYSMusic = function(btn, preset, key){
+  const amb = Ambient(preset), store = { get(){ try { return localStorage.getItem(key); } catch(e){ return null; } },
+    set(v){ try { localStorage.setItem(key, v); } catch(e){} } };
+  const lang = () => { let l = 'en'; try { l = localStorage.getItem('eys_lang') || document.documentElement.lang || 'en'; } catch(e){} return LBL[l.slice(0,2)] ? l.slice(0,2) : 'en'; };
+  const paint = () => { btn.setAttribute('aria-pressed', String(amb.on)); const t = LBL[lang()][amb.on ? 1 : 0]; btn.setAttribute('aria-label', t); btn.title = t; };
+  btn.addEventListener('click', e => { e.stopPropagation(); amb.on ? amb.stop() : amb.start(); store.set(amb.on ? 'on' : 'off'); paint(); });
+  if (store.get() === 'on'){
+    const go = e => { if (btn.contains(e.target)) return; ['pointerdown','keydown'].forEach(ev => removeEventListener(ev, go, true)); if (!amb.on){ amb.start(); paint(); } };
+    ['pointerdown','keydown'].forEach(ev => addEventListener(ev, go, true));
+  }
+  document.addEventListener('visibilitychange', () => document.hidden ? amb.pause() : amb.resume());
+  document.addEventListener('click', e => { if (e.target.closest && e.target.closest('[data-lang]')) setTimeout(paint, 0); });
+  paint();
+};
+})();
+
 document.documentElement.classList.add('js');
 
 /* ───────── CONTENT (EN / ID / ZH) ───────── */
@@ -1174,6 +1346,8 @@ let saved = 'en';
 try { saved = localStorage.getItem('eys_lang') || ((navigator.language||'').startsWith('id') ? 'id' : (navigator.language||'').startsWith('zh') ? 'zh' : 'en'); } catch (e) {}
 setLang(saved);
 resize();
+
+EYSMusic(document.getElementById('musicBtn'),'garden','eys_music');
 
 </script>
 </body>
