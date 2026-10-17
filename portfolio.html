@@ -351,11 +351,12 @@ body.portfolio{overflow:hidden}
 .studio.pf .hot-in.active .ring{background:var(--brass)}
 .studio.pf.inside .ripple,.studio.pf.inside .lantern{opacity:.4}
 
-.pf-intro{position:absolute;left:max(var(--space-6),calc((100vw - var(--wrap))/2 + var(--space-6)));top:96px;z-index:5;width:min(440px,calc(100vw - 2*var(--space-6)));background:var(--scrim);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-radius:var(--radius-md);border-top:1px solid rgba(180,154,112,.5);padding:var(--space-6) var(--space-6) var(--space-6);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.pf-intro{background:var(--scrim);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-radius:var(--radius-md);border-top:1px solid rgba(180,154,112,.5);padding:var(--space-6) var(--space-6) var(--space-6);transition:opacity .8s var(--ease),transform .8s var(--ease)}
 .pf-intro .label{color:var(--brass)}
 .pf-intro h1{color:var(--ivory);margin:var(--space-2) 0 var(--space-4)}
 .pf-intro p{color:var(--ivory);font-size:15px;line-height:24px;margin-bottom:var(--space-6)}
-.studio.pf.inside .pf-intro{opacity:0;transform:translateY(-10px);pointer-events:none}
+.studio.pf .drawer{z-index:5}
+.studio.pf.inside .drawer{opacity:0;pointer-events:none;transition:opacity .5s var(--ease)}
 
 .back-btn{position:absolute;left:max(var(--space-6),calc((100vw - var(--wrap))/2 + var(--space-6)));top:92px;z-index:5;background:var(--scrim);color:var(--ivory);border-color:var(--greige)}
 .pf-hint{position:absolute;left:50%;bottom:var(--space-10);transform:translateX(-50%);z-index:5;margin:0;background:var(--scrim);color:var(--ivory);border-radius:var(--radius-pill);padding:8px 16px;font-size:13px;line-height:18px;text-align:center;opacity:0;transition:opacity .6s var(--ease) 1.4s;pointer-events:none;white-space:nowrap}
@@ -404,7 +405,7 @@ body.portfolio{overflow:hidden}
   .studio.pf .hot-in .tag{display:none}
   .studio.pf .hot{display:flex}
   .studio.pf .hot-out{display:none}
-  .pf-intro{left:var(--space-4);right:var(--space-4);width:auto;top:auto;bottom:96px}
+  .studio.pf .drawer{position:absolute;left:var(--space-4);right:var(--space-4);top:auto;bottom:var(--space-4)}
   .back-btn{left:var(--space-4);top:80px}
   .pf-hint{display:none}
   .pf-list{left:var(--space-4);right:var(--space-4);bottom:var(--space-4);flex-wrap:wrap;justify-content:center;border-radius:var(--radius-md);padding:var(--space-2)}
@@ -419,6 +420,13 @@ body.portfolio{overflow:hidden}
 .studio.pf [hidden],.media>[hidden]{display:none!important}
 @media (max-width:760px){ .studio.pf:not(.inside) .pf-list{display:none} }
 
+.card-contact{margin-top:var(--space-10);padding-top:var(--space-6);border-top:1px solid var(--brass)}
+.card-contact .label{color:var(--metal)}
+.card-contact p{margin:var(--space-2) 0 var(--space-4)}
+.cc-links{display:flex;flex-wrap:wrap;gap:var(--space-2)}
+.card-pf .btn-ghost{color:var(--charcoal);border-color:var(--border-control)}
+.card-pf .btn-ghost:hover{border-color:var(--charcoal)}
+
 </style>
 </head>
 <body class="portfolio">
@@ -431,6 +439,7 @@ body.portfolio{overflow:hidden}
     <ul class="nav-links" id="navlinks">
       <li><a href="index.html" data-i18n="nav.studio">Studio</a></li>
       <li><a href="portfolio.html" aria-current="true" data-i18n="nav.portfolio">Portfolio</a></li>
+      <li><a href="index.html#contact" data-i18n="nav.connect">Connect</a></li>
     </ul>
     <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navlinks" data-i18n="nav.menu">Menu</button>
     <div class="langs" role="group" aria-label="Language">
@@ -466,11 +475,14 @@ body.portfolio{overflow:hidden}
   </div>
   <div class="dim" id="dim"></div>
 
-  <div class="pf-intro">
+  <div class="drawer" id="drawer">
+  <div class="intro pf-intro" id="intro">
     <div class="label" data-i18n="pf.eyebrow">Portfolio · Selected work</div>
     <h1 class="title" data-i18n="pf.h1">Step inside the studio</h1>
     <p data-i18n="pf.lead"></p>
     <button class="btn btn-primary" id="enterBtn" data-i18n="pf.enter">Step inside</button>
+  </div>
+  <button class="drawer-tab" id="drawerTab" aria-expanded="false" aria-controls="intro"><span class="paw" aria-hidden="true"></span><span class="tab-name" data-i18n="nav.portfolio">Portfolio</span></button>
   </div>
 
   <button class="btn btn-ghost back-btn" id="backBtn" hidden data-i18n="pf.back">Back outside</button>
@@ -552,6 +564,15 @@ body.portfolio{overflow:hidden}
         </dl>
         <div id="cBody"></div>
         <a class="btn btn-ghost" id="cLink" href="#" hidden></a>
+        <div class="card-contact">
+          <div class="label" data-i18n="pf.talk">Work with me</div>
+          <p data-i18n="pf.talkp">Have a challenge like this? I'd be glad to hear about it.</p>
+          <div class="cc-links">
+            <a class="btn btn-primary" href="mailto:eva.yuliana75@outlook.com?subject=Portfolio%20enquiry" data-i18n="pf.email">Email Eva</a>
+            <a class="btn btn-ghost" href="https://www.linkedin.com/in/eyuliana/" target="_blank" rel="noopener">LinkedIn</a>
+            <a class="btn btn-ghost" href="index.html#book" data-i18n="pf.book">Book a session</a>
+          </div>
+        </div>
       </div>
     </div>
   </aside>
@@ -586,6 +607,7 @@ document.documentElement.classList.add('js');
 /* ───────── CONTENT (EN / ID / ZH) — facts Eva has stated; no invented results ───────── */
 const P = {
 en:{
+  'nav.connect':'Connect','pf.talk':'Work with me','pf.talkp':"Have a challenge like this? I'd be glad to hear about it.",'pf.email':'Email Eva','pf.book':'Book a session',
   title:'Portfolio — Eva Yuliana', skip:'Skip to projects',
   'nav.studio':'Studio','nav.portfolio':'Portfolio','nav.menu':'Menu',
   'pf.eyebrow':'Portfolio · Selected work','pf.h1':'Step inside the studio',
@@ -613,6 +635,7 @@ en:{
   ]
 },
 id:{
+  'nav.connect':'Hubungi','pf.talk':'Kerja sama','pf.talkp':'Punya tantangan serupa? Saya senang mendengarnya.','pf.email':'Email Eva','pf.book':'Jadwalkan sesi',
   title:'Portofolio — Eva Yuliana', skip:'Langsung ke proyek',
   'nav.studio':'Studio','nav.portfolio':'Portofolio','nav.menu':'Menu',
   'pf.eyebrow':'Portofolio · Karya pilihan','pf.h1':'Masuki studio',
@@ -640,6 +663,7 @@ id:{
   ]
 },
 zh:{
+  'nav.connect':'联系','pf.talk':'与我合作','pf.talkp':'遇到类似的挑战？欢迎与我聊聊。','pf.email':'给Eva发邮件','pf.book':'预约会议',
   title:'作品集 — Eva Yuliana', skip:'跳至项目',
   'nav.studio':'工作室','nav.portfolio':'作品集','nav.menu':'菜单',
   'pf.eyebrow':'作品集 · 精选项目','pf.h1':'走进工作室',
@@ -687,10 +711,23 @@ function setLang(l){
 }
 $$('.langs button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
 
+
+/* ───────── INTRO DRAWER (same as the main studio) ───────── */
+const drawer = $('#drawer'), dTab = $('#drawerTab');
+let dClose = null;
+const setDrawer = o => { drawer.classList.toggle('open', o); dTab.setAttribute('aria-expanded', String(o)); };
+if (matchMedia('(hover:hover) and (pointer:fine)').matches){
+  drawer.addEventListener('pointerenter', () => { clearTimeout(dClose); setDrawer(true); });
+  drawer.addEventListener('pointerleave', () => { dClose = setTimeout(() => { if (!drawer.contains(document.activeElement)) setDrawer(false); }, 450); });
+}
+dTab.addEventListener('click', () => setDrawer(!drawer.classList.contains('open')));
+drawer.addEventListener('focusin', () => setDrawer(true));
+drawer.addEventListener('focusout', e => { if (!drawer.contains(e.relatedTarget)) setDrawer(false); });
+
 /* ───────── OUTSIDE → INSIDE ───────── */
 const studio = $('#studio');
 function goInside(on){
-  studio.classList.toggle('inside', on);
+  studio.classList.toggle('inside', on); setDrawer(false);
   $('#enterBtn').hidden = on; $('#backBtn').hidden = !on;
   $$('.hot-in').forEach(h => h.tabIndex = on ? 0 : -1);
   if (!on) closeCard();
