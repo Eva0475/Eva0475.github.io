@@ -619,8 +619,9 @@ body.portfolio{overflow:hidden}
 <script>
 /* EYS Ambient — original generative soundscapes, made in the browser (no audio files, no licences).
    preset 'garden' = website (warm pads, rain, garden stream, wind chimes)
-   preset 'zen'    = website (waterfall, plucked pipa-style pentatonic melody, soft pads, singing bowl)
-   preset 'focus'  = Athena OS (low drone, darker pads, soft rain on glass, sparse echoing blips) */
+   preset 'rain'   = website (soft rain, distant waterfall, slow warm pads, a few soft bell notes)
+   preset 'zen'    = Athena OS (waterfall, plucked pipa-style pentatonic melody, soft pads, singing bowl)
+   preset 'focus'  = earlier Athena option (low drone, darker pads, soft rain on glass, sparse echoing blips) */
 (function(){
 const hz = n => 440 * Math.pow(2, (n - 69) / 12);           // MIDI note → Hz
 const PRESETS = {
@@ -630,6 +631,14 @@ const PRESETS = {
     drone: null, water: true, rain: { hiss: .05, drops: [25, 110], dropGain: .07 },
     sparkle: { notes: [74,76,78,81,83,86], every: [2.4, 6.5], gain: .05, decay: 3.2, type: 'sine', echo: false },
     master: 1.4
+  },
+  rain: {
+    chords: [[50,57,61,64,69],[47,54,59,62,66],[43,50,55,59,62],[45,52,57,61,64]],   // D maj9 · Bm7 · G maj7 · A — slow and warm
+    chordSec: 22, padType: 'sine', padCut: 900, padGain: .03,
+    drone: null, water: false, waterfall: .55, rain: { hiss: .055, drops: [40, 160], dropGain: .06 },
+    sparkle: { notes: [62,66,69,71,74,78], every: [4, 9], gain: .075, decay: 5, type: 'sine', echo: false },
+    melody: null, bowl: null,
+    master: 1.35
   },
   zen: {
     chords: [[50,57,62,64,69],[47,54,59,62,66],[43,50,55,57,62],[45,52,57,59,64]],  // open, airy D-pentatonic voicings
@@ -733,6 +742,7 @@ function Ambient(name){
   }
   function waterfall(){
     if (!P.waterfall) return;
+    const k = P.waterfall === true ? 1 : P.waterfall;
     const len = ctx.sampleRate * 8, buf = ctx.createBuffer(2, len, ctx.sampleRate);
     for (let c = 0; c < 2; c++){ const d = buf.getChannelData(c); let b0 = 0, b1 = 0, b2 = 0;
       for (let i = 0; i < len; i++){ const w = Math.random()*2-1;            // pink-ish noise: the roar of falling water
@@ -740,8 +750,8 @@ function Ambient(name){
     [[ 'lowpass', 900, .09, .03 ], [ 'bandpass', 2600, .03, .11 ]].forEach(([type, f, gv, rate]) => {
       const src = ctx.createBufferSource(); src.buffer = buf; src.loop = true; src.loopStart = Math.random();
       const fl = ctx.createBiquadFilter(); fl.type = type; fl.frequency.value = f; fl.Q.value = type === 'bandpass' ? .7 : .5;
-      const g = ctx.createGain(); g.gain.value = gv;
-      const lfo = ctx.createOscillator(), lg = ctx.createGain(); lfo.frequency.value = rate; lg.gain.value = gv * .25;
+      const g = ctx.createGain(); g.gain.value = gv * k;
+      const lfo = ctx.createOscillator(), lg = ctx.createGain(); lfo.frequency.value = rate; lg.gain.value = gv * k * .25;
       lfo.connect(lg).connect(g.gain); lfo.start();
       src.connect(fl).connect(g); out(g, 1, .2); src.start(0, Math.random()*4); live.push(src, lfo); });
   }
@@ -1046,7 +1056,7 @@ setLang(saved);
 $$('.hot-in').forEach(h => h.tabIndex = -1);
 if (location.hash === '#inside') goInside(true);
 
-EYSMusic(document.getElementById('musicBtn'),'zen','eys_music');
+EYSMusic(document.getElementById('musicBtn'),'rain','eys_music');
 
 </script>
 </body>
