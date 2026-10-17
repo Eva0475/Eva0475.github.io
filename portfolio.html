@@ -619,6 +619,7 @@ body.portfolio{overflow:hidden}
 <script>
 /* EYS Ambient — original generative soundscapes, made in the browser (no audio files, no licences).
    preset 'garden' = website (warm pads, rain, garden stream, wind chimes)
+   preset 'zen'    = website (waterfall, plucked pipa-style pentatonic melody, soft pads, singing bowl)
    preset 'focus'  = Athena OS (low drone, darker pads, soft rain on glass, sparse echoing blips) */
 (function(){
 const hz = n => 440 * Math.pow(2, (n - 69) / 12);           // MIDI note → Hz
@@ -629,6 +630,15 @@ const PRESETS = {
     drone: null, water: true, rain: { hiss: .05, drops: [25, 110], dropGain: .07 },
     sparkle: { notes: [74,76,78,81,83,86], every: [2.4, 6.5], gain: .05, decay: 3.2, type: 'sine', echo: false },
     master: 1.4
+  },
+  zen: {
+    chords: [[50,57,62,64,69],[47,54,59,62,66],[43,50,55,57,62],[45,52,57,59,64]],  // open, airy D-pentatonic voicings
+    chordSec: 20, padType: 'sine', padCut: 1400, padGain: .028,
+    drone: null, water: false, waterfall: true, rain: null,
+    melody: { scale: [62,64,66,69,71,74,76,78,81], gain: .11, rest: [3.5, 7] },
+    bowl: { notes: [50, 57], every: [16, 30], gain: .05 },
+    sparkle: null,
+    master: 1.3
   },
   focus: {
     chords: [[45,52,55,59,60],[41,48,52,55,57],[48,55,59,62,64],[43,50,55,59,64]], // Am9 Fmaj9 Cmaj9 G6/9
@@ -721,8 +731,64 @@ function Ambient(name){
     };
     drop();
   }
+  function waterfall(){
+    if (!P.waterfall) return;
+    const len = ctx.sampleRate * 8, buf = ctx.createBuffer(2, len, ctx.sampleRate);
+    for (let c = 0; c < 2; c++){ const d = buf.getChannelData(c); let b0 = 0, b1 = 0, b2 = 0;
+      for (let i = 0; i < len; i++){ const w = Math.random()*2-1;            // pink-ish noise: the roar of falling water
+        b0 = .99765*b0 + w*.099; b1 = .963*b1 + w*.2965; b2 = .57*b2 + w*1.0527; d[i] = (b0 + b1 + b2 + w*.1848) * .18; } }
+    [[ 'lowpass', 900, .09, .03 ], [ 'bandpass', 2600, .03, .11 ]].forEach(([type, f, gv, rate]) => {
+      const src = ctx.createBufferSource(); src.buffer = buf; src.loop = true; src.loopStart = Math.random();
+      const fl = ctx.createBiquadFilter(); fl.type = type; fl.frequency.value = f; fl.Q.value = type === 'bandpass' ? .7 : .5;
+      const g = ctx.createGain(); g.gain.value = gv;
+      const lfo = ctx.createOscillator(), lg = ctx.createGain(); lfo.frequency.value = rate; lg.gain.value = gv * .25;
+      lfo.connect(lg).connect(g.gain); lfo.start();
+      src.connect(fl).connect(g); out(g, 1, .2); src.start(0, Math.random()*4); live.push(src, lfo); });
+  }
+  function pluck(t, n, vel, dur){                                            // pipa / guzheng-like plucked string
+    const f = hz(n), body = ctx.createBiquadFilter(); body.type = 'lowpass'; body.frequency.value = 4200;
+    const g = ctx.createGain(); g.gain.value = vel; body.connect(g); out(g, .55, .55);
+    for (let h = 1; h <= 7; h++){
+      const o = ctx.createOscillator(); o.type = 'sine';
+      o.frequency.setValueAtTime(f * h * 1.012, t); o.frequency.exponentialRampToValueAtTime(f * h, t + .07);  // tiny pitch settle after the pluck
+      const og = ctx.createGain(), a = Math.pow(h, -1.15) * (h === 2 ? 1.3 : 1), d = dur / Math.pow(h, .75);
+      og.gain.setValueAtTime(0, t); og.gain.linearRampToValueAtTime(a, t + .004); og.gain.exponentialRampToValueAtTime(.0001, t + d);
+      o.connect(og).connect(body); o.start(t); o.stop(t + d + .05); }
+    const nb = ctx.createBufferSource(), nl = ctx.sampleRate * .03, b = ctx.createBuffer(1, nl, ctx.sampleRate), bd = b.getChannelData(0);
+    for (let i = 0; i < nl; i++) bd[i] = (Math.random()*2-1) * (1 - i/nl);
+    nb.buffer = b; const nf = ctx.createBiquadFilter(); nf.type = 'bandpass'; nf.frequency.value = f * 4; nf.Q.value = 2;
+    const ng = ctx.createGain(); ng.gain.value = .35; nb.connect(nf).connect(ng).connect(body); nb.start(t);   // the "pick" of the nail
+  }
+  function melody(){
+    if (!running || !P.melody) return;
+    const M = P.melody, sc = M.scale, steps = 4 + Math.floor(Math.random()*4);
+    let i = 2 + Math.floor(Math.random()*4), t = ctx.currentTime + .1;
+    for (let k = 0; k < steps; k++){
+      const last = k === steps - 1, beat = [.45, .6, .9, 1.2][Math.floor(Math.random()*4)] * (last ? 1.6 : 1);
+      if (last && Math.random() < .55){                                   // tremolo on the long final note, like lunzhi
+        const reps = 14 + Math.floor(Math.random()*8);
+        for (let r = 0; r < reps; r++) pluck(t + r*.072, sc[i], M.gain * (.55 - r/reps*.35), .5);
+        pluck(t + reps*.072, sc[i], M.gain*.5, 3.4); t += reps*.072 + 1;
+      } else {
+        pluck(t, sc[i], M.gain * (.7 + Math.random()*.3), last ? 3.6 : 2.4);
+        if (!last && Math.random() < .18) pluck(t + beat*.5, sc[Math.min(sc.length-1, i+1)], M.gain*.5, 1.8);  // grace note
+        t += beat;
+      }
+      i = Math.max(0, Math.min(sc.length - 1, i + [-2,-1,-1,1,1,2,0][Math.floor(Math.random()*7)]));
+    }
+    const [a, b] = M.rest; timers.push(setTimeout(melody, (t - ctx.currentTime + a + Math.random()*(b - a)) * 1000));
+  }
+  function bowl(){
+    if (!running || !P.bowl) return;
+    const B = P.bowl, t = ctx.currentTime + .05, f = hz(B.notes[Math.floor(Math.random()*B.notes.length)]);
+    [[1, 1, 9], [2.76, .45, 6], [5.4, .2, 4], [8.9, .08, 2.5]].forEach(([m, a, d]) => {
+      const o = ctx.createOscillator(); o.frequency.value = f * m; const o2 = ctx.createOscillator(); o2.frequency.value = f * m + .8;  // slow shimmer
+      const g = ctx.createGain(); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(B.gain * a, t + .02); g.gain.exponentialRampToValueAtTime(.0001, t + d);
+      o.connect(g); o2.connect(g); out(g, .5, .8); [o, o2].forEach(x => { x.start(t); x.stop(t + d + .1); }); });
+    const [a, b] = B.every; timers.push(setTimeout(bowl, (a + Math.random()*(b - a)) * 1000));
+  }
   function sparkle(){
-    if (!running) return;
+    if (!running || !P.sparkle) return;
     const S = P.sparkle, t = ctx.currentTime + .05, n = S.notes[Math.floor(Math.random()*S.notes.length)];
     const g = ctx.createGain(); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(S.gain * (.6 + Math.random()*.4), t + .006);
     g.gain.exponentialRampToValueAtTime(.0001, t + S.decay);
@@ -739,7 +805,7 @@ function Ambient(name){
     get on(){ return running; },
     start(){
       if (running) return; if (!ctx) build();
-      ctx.resume(); running = true; chord(0); drone(); water(); rain(); timers.push(setTimeout(sparkle, 1800));
+      ctx.resume(); running = true; chord(0); drone(); water(); rain(); waterfall(); timers.push(setTimeout(sparkle, 1800), setTimeout(melody, 2500), setTimeout(bowl, 6000));
       const t = ctx.currentTime; master.gain.cancelScheduledValues(t); master.gain.setValueAtTime(master.gain.value, t);
       master.gain.linearRampToValueAtTime(P.master, t + 3);
     },
@@ -980,7 +1046,7 @@ setLang(saved);
 $$('.hot-in').forEach(h => h.tabIndex = -1);
 if (location.hash === '#inside') goInside(true);
 
-EYSMusic(document.getElementById('musicBtn'),'garden','eys_music');
+EYSMusic(document.getElementById('musicBtn'),'zen','eys_music');
 
 </script>
 </body>
