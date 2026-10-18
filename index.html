@@ -299,14 +299,29 @@ dialog::backdrop{background:rgba(30,28,26,.7)}
   .brand{font-size:21px}
   .langs button{padding:6px 8px}
   .wrap{padding:0 var(--space-4)}
-  .studio{height:auto;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end}
-  .scene{width:max(100vw,calc(100svh * 1.7917));top:0;transform:translate(-58%,0)}
-  .studio::after{content:"";position:absolute;inset:auto 0 0 0;height:60%;background:linear-gradient(to top,var(--charcoal) 30%,transparent);pointer-events:none;z-index:1}
-  .hot{display:none}
-  .drawer{position:relative;left:auto;top:auto;transform:none;display:block;z-index:4}
-  .drawer .intro{opacity:1;width:auto;padding-left:var(--space-6);border-radius:var(--radius-md)}
-  .drawer-tab{display:none}
-  .intro{position:relative;left:auto;top:auto;bottom:auto;width:auto;margin:calc(42svh) var(--space-4) var(--space-4);padding:var(--space-6)}
+  /* phones: the studio stays full-screen and you swipe across the room */
+  :where(body:not(.portfolio)) .studio{height:100svh;min-height:520px}
+  :where(body:not(.portfolio)) .scene{left:0;top:0;width:100%;height:100%;aspect-ratio:auto;transform:none;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior-x:contain}
+  :where(body:not(.portfolio)) .scene::-webkit-scrollbar{display:none}
+  :where(body:not(.portfolio)) .drift{position:relative;inset:auto;height:100%;width:calc(100svh * 1.7917);min-width:calc(520px * 1.7917);animation:none}
+  :where(body:not(.portfolio)) .hot{display:flex;padding:6px}
+  :where(body:not(.portfolio)) .hot .tag{opacity:1;transform:none;font-size:12px;line-height:16px;padding:4px 9px}
+  :where(body:not(.portfolio)) .hot .tag small{font-size:9px;line-height:12px}
+  :where(body:not(.portfolio)) .drawer{--gut:var(--space-4);top:78px;transform:translateX(calc(-1 * min(84vw,360px)))}
+  :where(body:not(.portfolio)) .drawer .intro{width:min(84vw,360px);padding:var(--space-6) var(--space-6) var(--space-6) var(--space-6)}
+  :where(body:not(.portfolio)) .drawer-tab{padding:var(--space-4) 10px}
+  :where(body:not(.portfolio)) .drawer-tab .tab-name{font-size:19px}
+  :where(body:not(.portfolio)) .intro{position:relative;left:auto;top:auto;bottom:auto;margin:0}
+  :where(body:not(.portfolio)) .swipe-hint{display:flex}
+  /* portfolio page keeps its own phone layout */
+  :where(body.portfolio) .studio{height:auto;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end}
+  :where(body.portfolio) .scene{width:max(100vw,calc(100svh * 1.7917));top:0;transform:translate(-58%,0)}
+  :where(body.portfolio) .studio::after{content:"";position:absolute;inset:auto 0 0 0;height:60%;background:linear-gradient(to top,var(--charcoal) 30%,transparent);pointer-events:none;z-index:1}
+  :where(body.portfolio) .hot{display:none}
+  :where(body.portfolio) .drawer{position:relative;left:auto;top:auto;transform:none;display:block;z-index:4}
+  :where(body.portfolio) .drawer .intro{opacity:1;width:auto;padding-left:var(--space-6);border-radius:var(--radius-md)}
+  :where(body.portfolio) .drawer-tab{display:none}
+  :where(body.portfolio) .intro{position:relative;left:auto;top:auto;bottom:auto;width:auto;margin:calc(42svh) var(--space-4) var(--space-4);padding:var(--space-6)}
   .rooms-strip{display:flex;gap:var(--space-2);overflow-x:auto;margin:var(--space-4) calc(-1*var(--space-6)) 0;padding:0 var(--space-6) var(--space-2);scrollbar-width:none}
   .rooms-strip a{flex:none;font-size:13px;line-height:18px;text-decoration:none;border:1px solid rgba(201,194,181,.5);border-radius:var(--radius-pill);padding:8px 12px;color:var(--ivory)}
   .scroll-cue{display:none}
@@ -348,6 +363,17 @@ dialog::backdrop{background:rgba(30,28,26,.7)}
 .langs button{white-space:nowrap}
 @media (max-width:420px){ .music{width:30px;height:30px;margin-right:4px} .langs button{padding:6px 6px} }
 @media (max-width:420px){ .brand{font-size:18px} .menu-btn{padding:0 10px} .nav-inner{padding:0 12px;gap:6px} }
+
+/* swipe hint (phones) */
+.swipe-hint{display:none;position:absolute;left:50%;bottom:var(--space-6);transform:translateX(-50%);z-index:4;align-items:center;gap:8px;background:var(--scrim);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--ivory);border-radius:var(--radius-pill);padding:8px 16px;font-size:13px;line-height:18px;white-space:nowrap;pointer-events:none;transition:opacity .6s var(--ease)}
+.swipe-hint.gone{opacity:0}
+@media (prefers-reduced-motion:no-preference){.swipe-hint .arr{animation:nudge 1.6s ease-in-out infinite}}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+/* white paw where a finger taps (touch screens have no cursor) */
+.paw-tap{position:fixed;width:30px;height:30px;margin:-15px 0 0 -15px;z-index:100;pointer-events:none;background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2228%22%20height%3D%2228%22%20viewBox%3D%220%200%2028%2028%22%3E%3Cg%20fill%3D%22%23FFFFFF%22%20stroke%3D%22%23343633%22%20stroke-width%3D%221.3%22%3E%3Cellipse%20cx%3D%227%22%20cy%3D%2210.5%22%20rx%3D%222.6%22%20ry%3D%223.3%22%20transform%3D%22rotate%28-18%207%2010.5%29%22/%3E%3Cellipse%20cx%3D%2211.6%22%20cy%3D%226.6%22%20rx%3D%222.6%22%20ry%3D%223.4%22%20transform%3D%22rotate%28-6%2011.6%206.6%29%22/%3E%3Cellipse%20cx%3D%2216.8%22%20cy%3D%226.6%22%20rx%3D%222.6%22%20ry%3D%223.4%22%20transform%3D%22rotate%286%2016.8%206.6%29%22/%3E%3Cellipse%20cx%3D%2221.3%22%20cy%3D%2210.5%22%20rx%3D%222.6%22%20ry%3D%223.3%22%20transform%3D%22rotate%2818%2021.3%2010.5%29%22/%3E%3Cpath%20d%3D%22M14.2%2012.6c-3.6%200-7.2%204.6-7.2%207.8%200%202.2%201.7%203.4%203.6%203.4%201.4%200%202.3-.8%203.6-.8s2.2.8%203.6.8c1.9%200%203.6-1.2%203.6-3.4%200-3.2-3.6-7.8-7.2-7.8z%22/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;filter:drop-shadow(0 2px 4px rgba(30,28,26,.45));animation:pawtap .7s var(--ease) forwards}
+@keyframes pawtap{0%{transform:scale(.4);opacity:0}25%{transform:scale(1);opacity:1}100%{transform:scale(1.1) translateY(-6px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.paw-tap{animation:none;opacity:0}}
+@media (max-width:760px){ :where(body:not(.portfolio)) .swipe-hint{display:flex} }
 
 </style>
 </head>
@@ -418,6 +444,7 @@ dialog::backdrop{background:rgba(30,28,26,.7)}
   </div>
   <button class="drawer-tab" id="drawerTab" aria-expanded="false" aria-controls="intro"><span class="paw" aria-hidden="true"></span><span class="tab-name">Eva Yuliana</span></button>
   </div>
+  <div class="swipe-hint" id="swipeHint" aria-hidden="true"><span class="arr">⟵</span><span data-i18n="hero.swipe">Swipe to explore the studio</span><span class="arr">⟶</span></div>
   <a class="scroll-cue" href="#about"><span class="line"></span><span data-i18n="hero.enter">Enter the studio</span></a>
 </section>
 
@@ -688,6 +715,22 @@ const PRESETS = {
   }
 };
 
+/* iPhones mute browser-made sound while the ring/silent switch is on silent.
+   Declaring "playback" audio (iOS 17+) and playing a silent loop inside the tap lets it be heard, like a music app. */
+let iosUnlocked = false;
+function unlockIOS(){
+  if (iosUnlocked) return; iosUnlocked = true;
+  try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch(e){}
+  try {
+    const sr = 8000, n = sr / 2, buf = new ArrayBuffer(44 + n * 2), v = new DataView(buf);
+    const w = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+    w(0,'RIFF'); v.setUint32(4, 36 + n * 2, true); w(8,'WAVE'); w(12,'fmt '); v.setUint32(16,16,true); v.setUint16(20,1,true); v.setUint16(22,1,true);
+    v.setUint32(24, sr, true); v.setUint32(28, sr * 2, true); v.setUint16(32,2,true); v.setUint16(34,16,true); w(36,'data'); v.setUint32(40, n * 2, true);
+    const el = new Audio(URL.createObjectURL(new Blob([buf], {type:'audio/wav'})));
+    el.loop = true; el.setAttribute('playsinline', ''); el.volume = .01; const pr = el.play(); if (pr && pr.catch) pr.catch(() => {});
+  } catch(e){}
+}
+
 function Ambient(name){
   const P = PRESETS[name] || PRESETS.garden;
   let ctx, master, wet, timers = [], live = [], running = false;
@@ -845,6 +888,7 @@ function Ambient(name){
     get on(){ return running; },
     start(){
       if (running) return; if (!ctx) build();
+      unlockIOS();
       ctx.resume(); running = true; chord(0); drone(); water(); rain(); waterfall(); timers.push(setTimeout(sparkle, 1800), setTimeout(melody, 2500), setTimeout(bowl, 6000));
       const t = ctx.currentTime; master.gain.cancelScheduledValues(t); master.gain.setValueAtTime(master.gain.value, t);
       master.gain.linearRampToValueAtTime(P.master, t + 3);
@@ -893,7 +937,7 @@ en:{
   'room.library':'Library','room.desk':'Desk','room.stair':'Staircase','room.stone':'Garden stone','room.bridge':'Bridge','room.pond':'Lotus pond','room.paw':'Paw print',
   'hero.role':'HR Transformation · AI Automation · Human-AI Bridge',
   'hero.desc':'20+ years transforming organizations through structured HR strategy. I build systems, frameworks and high-leverage processes that produce measurable outcomes — and bring the same care to creative work.',
-  'hero.cta1':'Work With Me','hero.cta2':'My AI System →','hero.enter':'Enter the studio',
+  'hero.cta1':'Work With Me','hero.cta2':'My AI System →','hero.enter':'Enter the studio','hero.swipe':'Swipe to explore the studio',
   'stat.exp.label':'Experience','stat.exp.sub':'Years HR Transformation',
   'stat.profile.label':'Profile','stat.profile.sub':'Commander · Aries',
   'stat.focus.label':'Focus','stat.focus.val':'Remote','stat.focus.sub':'Global Consulting',
@@ -957,7 +1001,7 @@ id:{
   'room.library':'Perpustakaan','room.desk':'Meja Kerja','room.stair':'Tangga','room.stone':'Batu Taman','room.bridge':'Jembatan','room.pond':'Kolam Teratai','room.paw':'Jejak Kaki',
   'hero.role':'Transformasi HR · Otomasi AI · Jembatan Manusia-AI',
   'hero.desc':'20+ tahun mentransformasi organisasi melalui strategi HR yang terstruktur. Saya membangun sistem, kerangka kerja, dan proses leverage tinggi yang menghasilkan hasil terukur — dan membawa ketelitian yang sama ke dalam karya kreatif.',
-  'hero.cta1':'Kerja Sama','hero.cta2':'Sistem AI Saya →','hero.enter':'Masuki studio',
+  'hero.cta1':'Kerja Sama','hero.cta2':'Sistem AI Saya →','hero.enter':'Masuki studio','hero.swipe':'Geser untuk menjelajahi studio',
   'stat.exp.label':'Pengalaman','stat.exp.sub':'Tahun Transformasi HR',
   'stat.profile.label':'Profil','stat.profile.sub':'Komandan · Aries',
   'stat.focus.label':'Fokus','stat.focus.val':'Remote','stat.focus.sub':'Konsultasi Global',
@@ -1021,7 +1065,7 @@ zh:{
   'room.library':'书房','room.desk':'书桌','room.stair':'楼梯','room.stone':'庭院石','room.bridge':'小桥','room.pond':'荷花池','room.paw':'爪印',
   'hero.role':'HR转型 · AI自动化 · 人机桥梁',
   'hero.desc':'20余年通过结构化HR战略转型组织。我构建能产生可量化成果的系统、框架和高效流程——并以同样的用心投入创意工作。',
-  'hero.cta1':'与我合作','hero.cta2':'我的AI系统 →','hero.enter':'走进工作室',
+  'hero.cta1':'与我合作','hero.cta2':'我的AI系统 →','hero.enter':'走进工作室','hero.swipe':'滑动探索工作室',
   'stat.exp.label':'经验','stat.exp.sub':'年HR转型经验',
   'stat.profile.label':'个人档案','stat.profile.sub':'指挥官 · 白羊座',
   'stat.focus.label':'专注领域','stat.focus.val':'远程','stat.focus.sub':'全球咨询',
@@ -1232,11 +1276,29 @@ setInterval(() => {
     drawer.addEventListener('pointerenter', () => { clearTimeout(closeT); setOpen(true); });
     drawer.addEventListener('pointerleave', () => { closeT = setTimeout(() => { if (!drawer.contains(document.activeElement)) setOpen(false); }, 450); });
   }
-  tab.addEventListener('click', () => setOpen(!drawer.classList.contains('open')));
-  drawer.addEventListener('focusin', () => setOpen(true));
+  let focusOpened = 0;
+  tab.addEventListener('click', () => { if (Date.now() - focusOpened < 400) return; setOpen(!drawer.classList.contains('open')); });
+  drawer.addEventListener('focusin', () => { if (!drawer.classList.contains('open')) focusOpened = Date.now(); setOpen(true); });
   drawer.addEventListener('focusout', e => { if (!drawer.contains(e.relatedTarget)) setOpen(false); });
   addEventListener('keydown', e => { if (e.key === 'Escape') setOpen(false); });
   studio.addEventListener('click', e => { if (!drawer.contains(e.target)) setOpen(false); });
+}
+
+/* ───────── PHONES: swipe across the studio, paw where you tap ───────── */
+{
+  const scene = $('#scene'), hint = $('#swipeHint');
+  const phone = () => matchMedia('(max-width:760px)').matches;
+  const centre = () => { if (phone()) scene.scrollLeft = (scene.scrollWidth - scene.clientWidth) * .4; };
+  centre(); addEventListener('load', centre);
+  let hid = false; const hide = () => { if (!hid){ hid = true; hint.classList.add('gone'); } };
+  scene.addEventListener('scroll', () => { if (Math.abs(scene.scrollLeft - (scene.scrollWidth - scene.clientWidth) * .4) > 20) hide(); }, {passive:true});
+  setTimeout(hide, 6000);
+  if (!reduceMotion) addEventListener('pointerdown', e => {
+    if (e.pointerType !== 'touch') return;
+    const s = document.createElement('span'); s.className = 'paw-tap';
+    s.style.left = e.clientX + 'px'; s.style.top = e.clientY + 'px';
+    document.body.appendChild(s); setTimeout(() => s.remove(), 750);
+  }, {passive:true});
 }
 
 /* ───────── REVEAL ───────── */
