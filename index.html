@@ -123,7 +123,8 @@ strong{font-weight:600}
 .hot .tag{background:var(--scrim);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-radius:var(--radius-md);padding:6px 12px;font-size:14px;line-height:20px;white-space:nowrap;opacity:0;transform:translateX(-4px);transition:opacity .35s var(--ease),transform .35s var(--ease)}
 .hot .tag small{display:block;font:600 11px/14px var(--font-sans);letter-spacing:.12em;text-transform:uppercase;color:var(--brass)}
 :lang(zh-Hans) .hot .tag small{letter-spacing:.04em}
-.hot:hover .tag,.hot:focus-visible .tag,.studio.show-tags .hot .tag{opacity:1;transform:none}
+.hot:hover .tag,.hot:focus-visible .tag{opacity:1;transform:none}
+.hot .tag small{display:none}
 .hot.left{flex-direction:row-reverse}
 .hot.left .tag{transform:translateX(4px)}
 
@@ -1239,7 +1240,6 @@ addEventListener('scroll', navMode, {passive:true}); navMode();
 /* ───────── STUDIO SCENE ───────── */
 $$('.hot[data-go]').forEach(b => b.addEventListener('click', () => document.getElementById(b.dataset.go).scrollIntoView({behavior: reduceMotion ? 'auto' : 'smooth'})));
 const studio = $('#studio');
-setTimeout(() => { studio.classList.add('show-tags'); setTimeout(() => studio.classList.remove('show-tags'), 3800); }, 1200);
 if (!reduceMotion && matchMedia('(hover:hover) and (pointer:fine)').matches){
   const px = $('#parallax');
   studio.addEventListener('pointermove', e => {

@@ -123,7 +123,8 @@ strong{font-weight:600}
 .hot .tag{background:var(--scrim);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-radius:var(--radius-md);padding:6px 12px;font-size:14px;line-height:20px;white-space:nowrap;opacity:0;transform:translateX(-4px);transition:opacity .35s var(--ease),transform .35s var(--ease)}
 .hot .tag small{display:block;font:600 11px/14px var(--font-sans);letter-spacing:.12em;text-transform:uppercase;color:var(--brass)}
 :lang(zh-Hans) .hot .tag small{letter-spacing:.04em}
-.hot:hover .tag,.hot:focus-visible .tag,.studio.show-tags .hot .tag{opacity:1;transform:none}
+.hot:hover .tag,.hot:focus-visible .tag{opacity:1;transform:none}
+.hot .tag small{display:none}
 .hot.left{flex-direction:row-reverse}
 .hot.left .tag{transform:translateX(4px)}
 
@@ -378,7 +379,6 @@ body.portfolio{overflow:hidden}
 .studio.pf .hot-in{opacity:0;pointer-events:none}
 .studio.pf.inside .hot-in{opacity:1;pointer-events:auto;transition-delay:1.1s}
 .studio.pf.inside .hot-out{opacity:0;pointer-events:none}
-.studio.pf.inside .hot-in .tag{opacity:1;transform:none}
 .studio.pf .hot-in.active .ring{background:var(--brass)}
 .studio.pf.inside .ripple,.studio.pf.inside .lantern{opacity:.4}
 
@@ -530,7 +530,7 @@ body.portfolio{overflow:hidden}
           <!-- inside: three objects -->
           <button class="hot hot-in" data-proj="0" style="left:33%;top:47.6%"><span class="ring"></span><span class="tag"><small class="obj">Circle artwork</small><span class="ttl">Athena</span></span></button>
           <button class="hot hot-in" data-proj="1" style="left:37.4%;top:53.6%"><span class="ring"></span><span class="tag"><small class="obj">Work desk</small><span class="ttl">HR SuperAgent</span></span></button>
-          <button class="hot hot-in left" data-proj="2" style="left:53.5%;top:46.5%"><span class="ring"></span><span class="tag"><small class="obj">Staircase</small><span class="ttl">Eva’s Digital Studio</span></span></button>
+          <button class="hot hot-in left" data-proj="2" style="left:51.5%;top:50%"><span class="ring"></span><span class="tag"><small class="obj">Staircase</small><span class="ttl">Eva’s Digital Studio</span></span></button>
           <button class="hot hot-in" data-proj="3" style="left:57.8%;top:48.2%"><span class="ring"></span><span class="tag"><small class="obj">Framed picture</small><span class="ttl">AI Creative Reel</span></span></button>
         </div>
       </div>
@@ -1094,12 +1094,16 @@ if (!reduceMotion) addEventListener('pointerdown', e => {
   s.style.left = e.clientX + 'px'; s.style.top = e.clientY + 'px';
   document.body.appendChild(s); setTimeout(() => s.remove(), 750);
 }, {passive:true});
+/* keyboard users get focus moved to the first object; mouse and touch users don't (avoids a stray label) */
+let kbd = false;
+addEventListener('keydown', () => { kbd = true; }, true);
+addEventListener('pointerdown', () => { kbd = false; }, true);
 function goInside(on){
   studio.classList.toggle('inside', on); setDrawer(false); aim(on ? .433 : .41, true, on);
   $('#enterBtn').hidden = on; $('#backBtn').hidden = !on;
   $$('.hot-in').forEach(h => h.tabIndex = on ? 0 : -1);
   if (!on) closeCard();
-  if (on) setTimeout(() => $('.hot-in')?.focus({preventScroll:true}), reduceMotion ? 0 : 1600);
+  if (on && kbd) setTimeout(() => $('.hot-in')?.focus({preventScroll:true}), reduceMotion ? 0 : 1600);
 }
 $('#enterBtn').addEventListener('click', () => goInside(true));
 $('#doorHot').addEventListener('click', () => goInside(true));
