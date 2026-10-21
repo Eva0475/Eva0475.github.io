@@ -507,6 +507,9 @@ body.portfolio{overflow:hidden}
 #homeBtn{left:auto;right:max(var(--space-6),calc((100vw - var(--wrap))/2 + var(--space-6)))}
 @media (max-width:760px){ #homeBtn{right:var(--space-4)} }
 .studio.pf #homeBtn[hidden]{display:none}
+/* Aslan photos: always show the whole picture (no cropping), on a dark mat */
+.dlg img#aslanBig{object-fit:contain;background:#2a2826}
+@media (max-width:760px){ .dlg img#aslanBig{height:auto;max-height:56svh;width:100%} }
 </style>
 </head>
 <body class="portfolio">

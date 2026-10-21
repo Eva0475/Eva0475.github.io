@@ -388,6 +388,9 @@ dialog::backdrop{background:rgba(30,28,26,.7)}
 .to-studio.show{opacity:1;transform:none;pointer-events:auto}
 .to-studio:hover{color:var(--ivory);border-color:var(--brass)}
 :lang(zh-Hans) .to-studio{font-weight:600;font-size:15px}
+/* Aslan photos: always show the whole picture (no cropping), on a dark mat */
+.dlg img#aslanBig{object-fit:contain;background:#2a2826}
+@media (max-width:760px){ .dlg img#aslanBig{height:auto;max-height:56svh;width:100%} }
 </style>
 </head>
 <body>
