@@ -969,7 +969,7 @@ en:{
   'services.tag':'What I Do','services.h2':'Services &amp; Expertise',
   'agents.tag':'AI Infrastructure','agents.h2':'The Athena Intelligence System',
   'agents.desc1':"I operate with a personal AI agent stack — 7 specialized agents, each with a defined role and domain, orchestrated by <strong>Athena</strong>. This isn't about replacing human judgment. It's about removing execution friction so strategy gets more airtime.",
-  'agents.desc2':'Every agent runs on Claude Sonnet 5.5. Athena holds full context on goals, constraints, and priorities, then delegates tasks to the right node. The result: faster output, tighter consistency, zero context-switching fatigue.',
+  'agents.desc2':'Every agent runs on the Claude API. Athena holds full context on goals, constraints, and priorities, then delegates tasks to the right node. The result: faster output, tighter consistency, zero context-switching fatigue.',
   'const.legend':'Delegation','const.caption':'An illustration of how Athena delegates: Eva briefs Athena, Athena hands work to the agents, and results flow back. Select a globe to meet each agent.',
   'act.brief':'Eva briefs Athena','act.to':'Athena → {a}','act.back':'{a} → Athena','act.peer':'{a} → {b}','act.report':'Athena reports to Eva',
   'book.tag':'Schedule','book.h2':'Book an<br>Appointment',
@@ -1033,7 +1033,7 @@ id:{
   'services.tag':'Yang Saya Lakukan','services.h2':'Layanan &amp; Keahlian',
   'agents.tag':'Infrastruktur AI','agents.h2':'Sistem Kecerdasan Athena',
   'agents.desc1':'Saya beroperasi dengan tumpukan agen AI pribadi — 7 agen khusus, masing-masing dengan peran dan domain yang ditentukan, diorkestrasikan oleh <strong>Athena</strong>. Ini bukan tentang menggantikan penilaian manusia. Ini tentang menghilangkan hambatan eksekusi agar strategi mendapat lebih banyak perhatian.',
-  'agents.desc2':'Setiap agen berjalan di atas Claude Sonnet 5.5. Athena memegang konteks penuh tentang tujuan, kendala, dan prioritas, lalu mendelegasikan tugas ke node yang tepat. Hasilnya: output lebih cepat, konsistensi lebih ketat, tanpa kelelahan pergantian konteks.',
+  'agents.desc2':'Setiap agen berjalan di atas Claude API. Athena memegang konteks penuh tentang tujuan, kendala, dan prioritas, lalu mendelegasikan tugas ke node yang tepat. Hasilnya: output lebih cepat, konsistensi lebih ketat, tanpa kelelahan pergantian konteks.',
   'const.legend':'Delegasi','const.caption':'Ilustrasi cara Athena mendelegasikan: Eva memberi arahan kepada Athena, Athena membagikan tugas ke para agen, dan hasilnya kembali. Pilih sebuah bola untuk mengenal tiap agen.',
   'act.brief':'Eva memberi arahan ke Athena','act.to':'Athena → {a}','act.back':'{a} → Athena','act.peer':'{a} → {b}','act.report':'Athena melapor ke Eva',
   'book.tag':'Jadwal','book.h2':'Buat<br>Janji Temu',
@@ -1097,7 +1097,7 @@ zh:{
   'services.tag':'我的业务','services.h2':'服务与专长',
   'agents.tag':'AI基础设施','agents.h2':'Athena智能系统',
   'agents.desc1':'我使用个人AI智能体栈运营——7个专业化智能体，各有明确角色与领域，由<strong>Athena</strong>统一协调。这不是要取代人类判断，而是消除执行摩擦，让战略获得更多发挥空间。',
-  'agents.desc2':'每个智能体均基于Claude Sonnet 5.5运行。Athena掌握目标、约束和优先级的完整上下文，并将任务分配至正确的节点。结果：更快的输出、更高的一致性、零上下文切换疲劳。',
+  'agents.desc2':'每个智能体均基于Claude API运行。Athena掌握目标、约束和优先级的完整上下文，并将任务分配至正确的节点。结果：更快的输出、更高的一致性、零上下文切换疲劳。',
   'const.legend':'任务委派','const.caption':'Athena委派工作的示意图：Eva向Athena下达指令，Athena将任务分配给各智能体，结果再汇总回来。点选任一星球，了解每位智能体。',
   'act.brief':'Eva向Athena下达指令','act.to':'Athena → {a}','act.back':'{a} → Athena','act.peer':'{a} → {b}','act.report':'Athena向Eva汇报',
   'book.tag':'预约','book.h2':'预约<br>会面',
@@ -1525,7 +1525,7 @@ function showAgent(idx, fromUser){
   selected = idx;
   const L = T[lang];
   if (idx === -1){
-    $('#pId').textContent = '00 · Claude Sonnet 5.5'; $('#pName').textContent = 'ATHENA';
+    $('#pId').textContent = '00 · Claude API'; $('#pName').textContent = 'ATHENA';
     $('#pRole').textContent = L.athena.role; $('#pDesc').textContent = L.athena.desc;
     $('#pTasks').innerHTML = L.athena.tasks.map(x => `<li>${x}</li>`).join('');
   } else {
