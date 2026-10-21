@@ -430,11 +430,10 @@ body.portfolio{overflow:hidden}
 @media (max-width:1024px){ .studio.pf{--z:1.8} }
 @media (max-width:760px){
   /* phones: same studio as laptop — swipe across the room, step inside, objects open the case card */
-  .studio.pf{--z:1.1}
+  .studio.pf{--z:1}
   .studio.pf .zoom{position:relative;inset:auto;height:100%;width:calc(100svh * 1.7917);min-width:calc(520px * 1.7917);transform-origin:43% 50%}
   .studio.pf .drift{position:absolute;inset:0}
   .studio.pf.inside .hot-in{transform:translate(-50%,-50%) scale(calc(1 / var(--z)))}
-  .studio.pf .hot-in .tag{display:none}
   .back-btn{left:auto;right:var(--space-4);top:80px}
   .pf-hint{display:none}
   .pf-list{left:var(--space-4);right:var(--space-4);bottom:var(--space-4);flex-wrap:wrap;justify-content:center;border-radius:var(--radius-md);padding:var(--space-2)}
@@ -492,7 +491,7 @@ body.portfolio{overflow:hidden}
 /* hotspot labels: one gold heading line */
 .hot .tag{font:500 20px/24px var(--font-serif);color:#D9C6A0;letter-spacing:.02em;padding:6px 14px;border:1px solid rgba(180,154,112,.45)}
 :lang(zh-Hans) .hot .tag{font-size:18px;font-weight:600;letter-spacing:.04em}
-@media (max-width:760px){ .hot .tag{font-size:16px;line-height:20px;padding:4px 10px} }
+@media (max-width:760px){ .hot .tag{font-size:16px;line-height:20px;padding:4px 10px} .studio.pf .hot .tag{font-size:15px;padding:3px 8px} }
 
 /* phone & tablet menu: a solid panel on the right, gold serif links, clear of the side tab */
 @media (max-width:1024px){
@@ -502,6 +501,8 @@ body.portfolio{overflow:hidden}
   .nav.open .nav-links a:hover,.nav.open .nav-links a[aria-current="true"]{color:var(--ivory)}
   :lang(zh-Hans) .nav.open .nav-links a{font-size:19px;font-weight:600}
 }
+/* phones: the MENU button is the one navigation; no second row of room pills */
+@media (max-width:760px){ .rooms-strip{display:none!important} }
 </style>
 </head>
 <body class="portfolio">
@@ -1113,7 +1114,7 @@ let kbd = false;
 addEventListener('keydown', () => { kbd = true; }, true);
 addEventListener('pointerdown', () => { kbd = false; }, true);
 function goInside(on){
-  studio.classList.toggle('inside', on); setDrawer(false); aim(on ? .433 : .41, true, on);
+  studio.classList.toggle('inside', on); setDrawer(false); aim(on ? .425 : .41, true, on);
   $('#enterBtn').hidden = on; $('#backBtn').hidden = !on;
   $$('.hot-in').forEach(h => h.tabIndex = on ? 0 : -1);
   if (!on) closeCard();
