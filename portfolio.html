@@ -503,6 +503,10 @@ body.portfolio{overflow:hidden}
 }
 /* phones: the MENU button is the one navigation; no second row of room pills */
 @media (max-width:760px){ .rooms-strip{display:none!important} }
+/* way back to the main studio, shown while standing outside the portfolio */
+#homeBtn{left:auto;right:max(var(--space-6),calc((100vw - var(--wrap))/2 + var(--space-6)))}
+@media (max-width:760px){ #homeBtn{right:var(--space-4)} }
+.studio.pf #homeBtn[hidden]{display:none}
 </style>
 </head>
 <body class="portfolio">
@@ -545,7 +549,7 @@ body.portfolio{overflow:hidden}
           <!-- inside: three objects -->
           <button class="hot hot-in" data-proj="0" style="left:33%;top:47.6%"><span class="ring"></span><span class="tag"><small class="obj">Circle artwork</small><span class="ttl">Athena</span></span></button>
           <button class="hot hot-in" data-proj="1" style="left:37.4%;top:53.6%"><span class="ring"></span><span class="tag"><small class="obj">Work desk</small><span class="ttl">HR SuperAgent</span></span></button>
-          <button class="hot hot-in left" data-proj="2" style="left:51.5%;top:50%"><span class="ring"></span><span class="tag"><small class="obj">Staircase</small><span class="ttl">Eva’s Digital Studio</span></span></button>
+          <button class="hot hot-in" data-proj="2" style="left:47%;top:46%"><span class="ring"></span><span class="tag"><small class="obj">Indoor tree</small><span class="ttl">Eva’s Digital Studio</span></span></button>
           <button class="hot hot-in" data-proj="3" style="left:57.8%;top:48.2%"><span class="ring"></span><span class="tag"><small class="obj">Framed picture</small><span class="ttl">AI Creative Reel</span></span></button>
         </div>
       </div>
@@ -564,7 +568,8 @@ body.portfolio{overflow:hidden}
   </div>
 
   <div class="swipe-hint" id="swipeHint" aria-hidden="true"><span class="arr">⟵</span><span data-i18n="hero.swipe">Swipe to explore the studio</span><span class="arr">⟶</span></div>
-  <button class="btn btn-ghost back-btn" id="backBtn" hidden data-i18n="pf.back">Back outside</button>
+  <button class="btn btn-ghost back-btn" id="backBtn" hidden data-i18n="pf.back">← Back outside</button>
+  <a class="btn btn-ghost back-btn" id="homeBtn" href="index.html" data-i18n="pf.home">← Back to Studio</a>
   <p class="pf-hint" data-i18n="pf.hint"></p>
 
   <nav class="pf-list" id="projects" aria-label="Projects">
@@ -945,8 +950,8 @@ en:{
   'nav.studio':'Studio','nav.portfolio':'Portfolio','nav.menu':'Menu',
   'pf.eyebrow':'Portfolio · Selected work','pf.h1':'Step inside the studio',
   'pf.lead':'Four pieces of work, each waiting on an object in the room. Walk in and choose one.',
-  'pf.enter':'Step inside','hero.swipe':'Swipe to explore the studio','pf.back':'Back outside','pf.list':'Projects','pf.close':'Close','pf.next':'Next project','pf.prev':'Previous project',
-  'pf.role':'Role','pf.stack':'Built with','pf.status':'Status','pf.hint':'Choose an object — the art, the desk, the staircase or the framed picture.',
+  'pf.enter':'Step inside','hero.swipe':'Swipe to explore the studio','pf.back':'← Back outside','pf.home':'← Back to Studio','pf.list':'Projects','pf.close':'Close','pf.next':'Next project','pf.prev':'Previous project',
+  'pf.role':'Role','pf.stack':'Built with','pf.status':'Status','pf.hint':'Choose an object — the art, the desk, the tree or the framed picture.',
   'aslan.hello':'Aslan · always close','aslan.sub':'My companion, always close','aslan.close':'Close',
   'aslan.body':'Aslan the Samoyed keeps me company in the studio — curled up in his bed beside my desk, through every plan, every draft and every late night.',
   projects:[
@@ -960,7 +965,7 @@ en:{
      body:['Requests arrive by email or through a web form. A Claude-powered classifier reads each one and routes it to the right agent.',
            'Applications go to a recruitment screening agent that replies at the right tier and logs every candidate in Google Sheets. New hires go to an onboarding agent that drafts a 90-day plan, sends the welcome email and alerts the HR team — 31 nodes in a single workflow, modelled on a multi-agent HR reference architecture.'],
      link:null},
-    {key:'studio', object:'Staircase', eyebrow:'Brand & web · Creative work', title:'Eva’s Digital Studio', sub:'A trilingual personal site built as a quiet, explorable studio instead of a template.',
+    {key:'studio', object:'Indoor tree', eyebrow:'Brand & web · Creative work', title:'Eva’s Digital Studio', sub:'A trilingual personal site built as a quiet, explorable studio instead of a template.',
      role:'Creative direction · built with Claude', stack:'Design system · HTML/CSS/JS · EN / ID / 中文', status:'Live',
      body:['It began with a design system: walnut, ivory, jade and brass; Cormorant Garamond and Inter; every text pairing checked for readability in English, Indonesian and Simplified Chinese.',
            'From there, a cinematic studio where each room opens part of the work, an Athena constellation that shows delegation in motion, and Aslan, always close.'],
@@ -980,8 +985,8 @@ id:{
   'nav.studio':'Studio','nav.portfolio':'Portofolio','nav.menu':'Menu',
   'pf.eyebrow':'Portofolio · Karya pilihan','pf.h1':'Masuki studio',
   'pf.lead':'Empat karya, masing-masing menunggu di sebuah benda di dalam ruangan. Masuklah dan pilih salah satunya.',
-  'pf.enter':'Masuk','hero.swipe':'Geser untuk menjelajahi studio','pf.back':'Kembali ke luar','pf.list':'Proyek','pf.close':'Tutup','pf.next':'Proyek berikutnya','pf.prev':'Proyek sebelumnya',
-  'pf.role':'Peran','pf.stack':'Dibangun dengan','pf.status':'Status','pf.hint':'Pilih sebuah benda — lukisan, meja kerja, tangga, atau bingkai foto.',
+  'pf.enter':'Masuk','hero.swipe':'Geser untuk menjelajahi studio','pf.back':'← Kembali ke luar','pf.home':'← Kembali ke Studio','pf.list':'Proyek','pf.close':'Tutup','pf.next':'Proyek berikutnya','pf.prev':'Proyek sebelumnya',
+  'pf.role':'Peran','pf.stack':'Dibangun dengan','pf.status':'Status','pf.hint':'Pilih sebuah benda — lukisan, meja kerja, pohon, atau bingkai foto.',
   'aslan.hello':'Aslan · selalu dekat','aslan.sub':'Pendamping saya, selalu dekat','aslan.close':'Tutup',
   'aslan.body':'Aslan, si Samoyed, menemani saya di studio — meringkuk di tempat tidurnya di samping meja kerja saya, di setiap rencana, setiap draf, dan setiap malam yang panjang.',
   projects:[
@@ -995,7 +1000,7 @@ id:{
      body:['Permintaan masuk melalui email atau formulir web. Pengklasifikasi bertenaga Claude membaca setiap permintaan dan meneruskannya ke agen yang tepat.',
            'Lamaran diteruskan ke agen penyaringan rekrutmen yang membalas sesuai tingkatannya dan mencatat setiap kandidat di Google Sheets. Karyawan baru diteruskan ke agen onboarding yang menyusun rencana 90 hari, mengirim email sambutan, dan memberi tahu tim HR — 31 node dalam satu alur kerja, mengacu pada arsitektur referensi HR multi-agen.'],
      link:null},
-    {key:'studio', object:'Tangga', eyebrow:'Merek & web · Karya kreatif', title:'Eva’s Digital Studio', sub:'Situs pribadi tiga bahasa yang dibangun sebagai studio yang tenang untuk dijelajahi, bukan templat.',
+    {key:'studio', object:'Pohon di dalam', eyebrow:'Merek & web · Karya kreatif', title:'Eva’s Digital Studio', sub:'Situs pribadi tiga bahasa yang dibangun sebagai studio yang tenang untuk dijelajahi, bukan templat.',
      role:'Arahan kreatif · dibangun bersama Claude', stack:'Sistem desain · HTML/CSS/JS · EN / ID / 中文', status:'Aktif',
      body:['Semuanya dimulai dari sistem desain: walnut, gading, giok, dan kuningan; Cormorant Garamond dan Inter; setiap pasangan teks diperiksa keterbacaannya dalam bahasa Inggris, Indonesia, dan Mandarin Sederhana.',
            'Dari situ lahir studio sinematik tempat setiap ruang membuka satu bagian pekerjaan, konstelasi Athena yang menampilkan delegasi secara bergerak, dan Aslan yang selalu dekat.'],
@@ -1015,8 +1020,8 @@ zh:{
   'nav.studio':'工作室','nav.portfolio':'作品集','nav.menu':'菜单',
   'pf.eyebrow':'作品集 · 精选项目','pf.h1':'走进工作室',
   'pf.lead':'四个作品，各自藏在房间里的一件物品中。走进来，选择一个。',
-  'pf.enter':'走进去','hero.swipe':'滑动探索工作室','pf.back':'回到室外','pf.list':'项目','pf.close':'关闭','pf.next':'下一个项目','pf.prev':'上一个项目',
-  'pf.role':'角色','pf.stack':'使用工具','pf.status':'状态','pf.hint':'选择一件物品——画作、书桌、楼梯或画框。',
+  'pf.enter':'走进去','hero.swipe':'滑动探索工作室','pf.back':'← 回到室外','pf.home':'← 回到工作室','pf.list':'项目','pf.close':'关闭','pf.next':'下一个项目','pf.prev':'上一个项目',
+  'pf.role':'角色','pf.stack':'使用工具','pf.status':'状态','pf.hint':'选择一件物品——画作、书桌、树或画框。',
   'aslan.hello':'Aslan · 始终相伴','aslan.sub':'我的伙伴，始终相伴','aslan.close':'关闭',
   'aslan.body':'萨摩耶Aslan在工作室里陪伴着我——蜷卧在书桌旁的小窝里，陪我度过每一个计划、每一份草稿和每一个深夜。',
   projects:[
@@ -1030,7 +1035,7 @@ zh:{
      body:['请求通过邮件或网页表单进入。由Claude驱动的分类器读取每一条请求，并将其转给合适的智能体。',
            '求职申请交给招聘筛选智能体，按不同层级回复并将每位候选人记录在Google Sheets中；新员工交给入职智能体，起草90天计划、发送欢迎邮件并通知HR团队——31个节点集成于单一工作流，参照多智能体HR参考架构设计。'],
      link:null},
-    {key:'studio', object:'楼梯', eyebrow:'品牌与网站 · 创意作品', title:'Eva’s Digital Studio', sub:'一个三语个人网站，被打造成可以安静探索的工作室，而非模板。',
+    {key:'studio', object:'室内树', eyebrow:'品牌与网站 · 创意作品', title:'Eva’s Digital Studio', sub:'一个三语个人网站，被打造成可以安静探索的工作室，而非模板。',
      role:'创意指导 · 与Claude共同搭建', stack:'设计系统 · HTML/CSS/JS · EN / ID / 中文', status:'已上线',
      body:['一切始于设计系统：胡桃木、象牙白、玉绿与黄铜；Cormorant Garamond与Inter字体；每一组文字配色都在英文、印尼文和简体中文中检查过可读性。',
            '在此基础上，打造出一个电影感的工作室：每个空间通向一部分工作，Athena星图动态展示任务委派，而Aslan始终相伴。'],
@@ -1114,8 +1119,8 @@ let kbd = false;
 addEventListener('keydown', () => { kbd = true; }, true);
 addEventListener('pointerdown', () => { kbd = false; }, true);
 function goInside(on){
-  studio.classList.toggle('inside', on); setDrawer(false); aim(on ? .425 : .41, true, on);
-  $('#enterBtn').hidden = on; $('#backBtn').hidden = !on;
+  studio.classList.toggle('inside', on); setDrawer(false); aim(on ? .435 : .41, true, on);
+  $('#enterBtn').hidden = on; $('#backBtn').hidden = !on; $('#homeBtn').hidden = on;
   $$('.hot-in').forEach(h => h.tabIndex = on ? 0 : -1);
   if (!on) closeCard();
   if (on && kbd) setTimeout(() => $('.hot-in')?.focus({preventScroll:true}), reduceMotion ? 0 : 1600);
