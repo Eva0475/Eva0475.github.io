@@ -400,6 +400,13 @@ body.portfolio{overflow:hidden}
 .pf-list button{font:500 13px/18px var(--font-sans);color:var(--ivory);background:none;border:1px solid rgba(201,194,181,.4);border-radius:var(--radius-pill);padding:6px 12px}
 .pf-list button:hover,.pf-list button.active{background:var(--brass);border-color:var(--brass);color:var(--charcoal)}
 .pf-list{flex-wrap:wrap;justify-content:flex-end;max-width:min(860px,calc(100vw - 2*var(--space-6)));border-radius:var(--radius-md)}
+/* the list stays folded behind one small button so the room and its hotspots lead */
+.pf-toggle{position:absolute;right:var(--space-6);bottom:var(--space-6);z-index:5;display:inline-flex;align-items:center;gap:8px;background:var(--scrim);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:var(--ivory);border:1px solid rgba(201,194,181,.4);border-radius:var(--radius-pill);padding:10px 18px;font:500 13px/18px var(--font-sans);cursor:pointer}
+.pf-toggle:hover,.pf-toggle[aria-expanded="true"]{border-color:var(--brass);color:var(--brass)}
+.pf-toggle .chev{display:inline-block;transition:transform .3s var(--ease)}
+.pf-toggle[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.pf-list{bottom:calc(var(--space-6) + var(--pf-list-h,40px) + 10px)}
+.pf-list:not(.open){display:none}
 
 /* the room dims while a card is open */
 .dim{position:absolute;inset:0;z-index:4;background:rgba(30,28,26,.5);opacity:0;pointer-events:none;transition:opacity .6s var(--ease)}
@@ -440,6 +447,8 @@ body.portfolio{overflow:hidden}
   .pf-hint{display:none}
   .pf-list{left:var(--space-4);right:var(--space-4);bottom:var(--space-4);flex-wrap:wrap;justify-content:center;border-radius:var(--radius-md);padding:var(--space-2)}
   .pf-list .label{width:100%;text-align:center;margin:0}
+  .pf-toggle{right:50%;transform:translateX(50%);bottom:var(--space-4)}
+  .pf-list{bottom:calc(var(--space-4) + var(--pf-list-h,40px) + 10px)}
   .card-pf{top:auto;height:86svh;width:100vw;border-radius:var(--radius-md) var(--radius-md) 0 0;transform:translateY(102%)}
   .card-pf.open{transform:none}
   .facts div{grid-template-columns:96px 1fr}
@@ -449,7 +458,7 @@ body.portfolio{overflow:hidden}
 .studio.pf.inside .drift{animation-play-state:paused}
 
 .studio.pf [hidden],.media>[hidden]{display:none!important}
-@media (max-width:760px){ .studio.pf:not(.inside) .pf-list{display:none} }
+@media (max-width:760px){ .studio.pf:not(.inside) .pf-list,.studio.pf:not(.inside) .pf-toggle{display:none} }
 
 .card-contact{margin-top:var(--space-10);padding-top:var(--space-6);border-top:1px solid var(--brass)}
 .card-contact .label{color:var(--metal)}
@@ -525,7 +534,7 @@ body.portfolio{overflow:hidden}
 </style>
 </head>
 <body class="portfolio">
-<a class="skip" href="#projects" data-i18n="skip">Skip to projects</a>
+<a class="skip" href="#pfToggle" data-i18n="skip">Skip to projects</a>
 
 <header class="nav" data-mode="scene" id="nav">
   <div class="nav-inner">
@@ -590,6 +599,7 @@ body.portfolio{overflow:hidden}
   <a class="btn btn-ghost back-btn" id="homeBtn" href="index.html" data-i18n="pf.home">← Back to Studio</a>
   <p class="pf-hint" data-i18n="pf.hint"></p>
 
+  <button class="pf-toggle" id="pfToggle" type="button" aria-expanded="false" aria-controls="projects"><span data-i18n="pf.all">All projects</span> <span class="n">(7)</span> <span class="chev" aria-hidden="true">▴</span></button>
   <nav class="pf-list" id="projects" aria-label="Projects">
     <span class="label" data-i18n="pf.list">Projects</span>
     <button data-proj="0"><span class="ttl">HR SuperAgent</span></button>
@@ -994,8 +1004,8 @@ en:{
   'nav.studio':'Studio','nav.portfolio':'Portfolio','nav.menu':'Menu',
   'pf.eyebrow':'Portfolio · Selected work','pf.h1':'Step inside the studio',
   'pf.lead':'Seven pieces of work, each waiting on an object in the room. Walk in and choose one.',
-  'pf.enter':'Step inside','hero.swipe':'Swipe to explore the studio','pf.back':'← Back outside','pf.home':'← Back to Studio','pf.list':'Projects','pf.close':'Close','pf.next':'Next project','pf.prev':'Previous project',
-  'pf.role':'Role','pf.stack':'Built with','pf.status':'Status','pf.hint':'Choose an object in the room — the desk, the staircase, the shelf, the art and more.',
+  'pf.enter':'Step inside','hero.swipe':'Swipe to explore the studio','pf.back':'← Back outside','pf.home':'← Back to Studio','pf.list':'Projects','pf.all':'All projects','pf.close':'Close','pf.next':'Next project','pf.prev':'Previous project',
+  'pf.role':'Role','pf.stack':'Built with','pf.status':'Status','pf.hint':'Choose an object in the room — or open All projects below.',
   'aslan.hello':'Aslan · always close','aslan.sub':'My companion, always close','aslan.close':'Close',
   'aslan.body':'Aslan the Samoyed keeps me company in the studio — curled up in his bed beside my desk, through every plan, every draft and every late night.',
   projects:[
@@ -1047,8 +1057,8 @@ id:{
   'nav.studio':'Studio','nav.portfolio':'Portofolio','nav.menu':'Menu',
   'pf.eyebrow':'Portofolio · Karya pilihan','pf.h1':'Masuki studio',
   'pf.lead':'Tujuh karya, masing-masing menunggu di sebuah benda di dalam ruangan. Masuklah dan pilih salah satunya.',
-  'pf.enter':'Masuk','hero.swipe':'Geser untuk menjelajahi studio','pf.back':'← Kembali ke luar','pf.home':'← Kembali ke Studio','pf.list':'Proyek','pf.close':'Tutup','pf.next':'Proyek berikutnya','pf.prev':'Proyek sebelumnya',
-  'pf.role':'Peran','pf.stack':'Dibangun dengan','pf.status':'Status','pf.hint':'Pilih sebuah benda di ruangan — meja kerja, tangga, rak, lukisan, dan lainnya.',
+  'pf.enter':'Masuk','hero.swipe':'Geser untuk menjelajahi studio','pf.back':'← Kembali ke luar','pf.home':'← Kembali ke Studio','pf.list':'Proyek','pf.all':'Semua proyek','pf.close':'Tutup','pf.next':'Proyek berikutnya','pf.prev':'Proyek sebelumnya',
+  'pf.role':'Peran','pf.stack':'Dibangun dengan','pf.status':'Status','pf.hint':'Pilih sebuah benda di ruangan — atau buka Semua proyek di bawah.',
   'aslan.hello':'Aslan · selalu dekat','aslan.sub':'Pendamping saya, selalu dekat','aslan.close':'Tutup',
   'aslan.body':'Aslan, si Samoyed, menemani saya di studio — meringkuk di tempat tidurnya di samping meja kerja saya, di setiap rencana, setiap draf, dan setiap malam yang panjang.',
   projects:[
@@ -1100,8 +1110,8 @@ zh:{
   'nav.studio':'工作室','nav.portfolio':'作品集','nav.menu':'菜单',
   'pf.eyebrow':'作品集 · 精选项目','pf.h1':'走进工作室',
   'pf.lead':'七个作品，各自藏在房间里的一件物品中。走进来，选择一个。',
-  'pf.enter':'走进去','hero.swipe':'滑动探索工作室','pf.back':'← 回到室外','pf.home':'← 回到工作室','pf.list':'项目','pf.close':'关闭','pf.next':'下一个项目','pf.prev':'上一个项目',
-  'pf.role':'角色','pf.stack':'使用工具','pf.status':'状态','pf.hint':'选择房间里的一件物品——书桌、楼梯、置物架、画作等。',
+  'pf.enter':'走进去','hero.swipe':'滑动探索工作室','pf.back':'← 回到室外','pf.home':'← 回到工作室','pf.list':'项目','pf.all':'全部项目','pf.close':'关闭','pf.next':'下一个项目','pf.prev':'上一个项目',
+  'pf.role':'角色','pf.stack':'使用工具','pf.status':'状态','pf.hint':'选择房间里的一件物品，或打开下方的“全部项目”。',
   'aslan.hello':'Aslan · 始终相伴','aslan.sub':'我的伙伴，始终相伴','aslan.close':'关闭',
   'aslan.body':'萨摩耶Aslan在工作室里陪伴着我——蜷卧在书桌旁的小窝里，陪我度过每一个计划、每一份草稿和每一个深夜。',
   projects:[
@@ -1326,9 +1336,17 @@ EYSMusic(document.getElementById('musicBtn'),'rain','eys_music');
 </script>
 <script>
 /* keep the room hint above the project bar, however many rows the bar wraps to */
-(function(){var l=document.getElementById('projects'),r=document.documentElement;if(!l)return;
+(function(){var l=document.getElementById('pfToggle'),r=document.documentElement;if(!l)return;
 function f(){r.style.setProperty('--pf-list-h',l.offsetHeight+'px')}
-f();window.addEventListener('resize',f);if(window.ResizeObserver)new ResizeObserver(f).observe(l);})();
+f();window.addEventListener('resize',f);if(window.ResizeObserver)new ResizeObserver(f).observe(l);
+var list=document.getElementById('projects'),pc=document.querySelector('.pf-hint');
+function set(o){list.classList.toggle('open',o);l.setAttribute('aria-expanded',o);if(pc)pc.style.visibility=o?'hidden':'';}
+l.addEventListener('click',function(e){e.stopPropagation();var o=!list.classList.contains('open');set(o);if(o){var b=list.querySelector('button');if(b)b.focus({preventScroll:true});}});
+list.addEventListener('click',function(e){if(e.target.closest('[data-proj]'))set(false);},true);
+document.addEventListener('click',function(e){if(list.classList.contains('open')&&!list.contains(e.target))set(false);});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&list.classList.contains('open')){e.stopImmediatePropagation();set(false);l.focus();}},true);
+var sk=document.querySelector('a.skip');if(sk)sk.addEventListener('click',function(){setTimeout(function(){set(true);},0);});
+})();
 </script>
 </body>
 </html>
