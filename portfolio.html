@@ -416,6 +416,7 @@ body.portfolio{overflow:hidden}
 .media{padding:var(--space-6) var(--space-6) 0}
 .media>*{width:100%;height:auto;display:block;border-radius:var(--radius-sm);outline:1px solid rgba(180,154,112,.45);outline-offset:-1px}
 .media img{aspect-ratio:16/10;object-fit:cover}
+.media img.wf{aspect-ratio:auto;object-fit:contain;background:#fff}
 .card-body{padding:var(--space-6) var(--space-6) var(--space-10)}
 .card-body .label{color:var(--metal)}
 .card-body h2{margin:var(--space-2) 0 var(--space-2)}
@@ -462,9 +463,9 @@ body.portfolio{overflow:hidden}
 .shots h3{font:600 12px/16px var(--font-sans);letter-spacing:.12em;text-transform:uppercase;color:var(--metal);margin:0 0 var(--space-2)}
 :lang(zh-Hans) .shots h3{letter-spacing:.04em}
 .shot{margin:0 0 var(--space-4)}
-.shot .frame{position:relative;border-radius:var(--radius-sm);overflow:hidden;outline:1px solid rgba(180,154,112,.45);outline-offset:-1px;background:#f4f5f7}
+.shot .frame{position:relative;border-radius:var(--radius-sm);overflow:hidden;outline:1px solid rgba(180,154,112,.45);outline-offset:-1px;background:#fff}
 .shot img{width:100%;height:auto;display:block;-webkit-user-drag:none;user-select:none;pointer-events:none}
-.shot .frame::after{content:"Eva Yuliana · Demo";position:absolute;right:8px;bottom:8px;font:600 11px/14px var(--font-sans);letter-spacing:.08em;color:rgba(52,54,51,.55);background:rgba(242,235,221,.8);border-radius:var(--radius-pill);padding:3px 9px}
+.shot .frame::after{content:attr(data-mark);position:absolute;right:8px;bottom:8px;font:600 11px/14px var(--font-sans);letter-spacing:.08em;color:rgba(52,54,51,.55);background:rgba(242,235,221,.8);border-radius:var(--radius-pill);padding:3px 9px}
 .shot figcaption{margin-top:6px;font-size:14px;line-height:20px;font-weight:500}
 
 /* creative reel: video gallery inside the case card */
@@ -709,25 +710,7 @@ body.portfolio{overflow:hidden}
           </g>
         </svg>
         <!-- HR SuperAgent: workflow -->
-        <svg data-media="hr" viewBox="0 0 520 300" role="img" aria-label="Email and web form feed a Claude classifier, which routes to a recruitment agent and an onboarding agent" hidden>
-          <rect width="520" height="300" fill="#F2EBDD"/>
-          <g font-family="Inter,system-ui,sans-serif" font-size="11" fill="#343633">
-            <g fill="#F7F2E8" stroke="#8A7A5C"><rect x="20" y="70" width="104" height="40" rx="2"/><rect x="20" y="190" width="104" height="40" rx="2"/></g>
-            <text x="72" y="94" text-anchor="middle">Gmail</text><text x="72" y="214" text-anchor="middle">Web form</text>
-            <rect x="178" y="125" width="128" height="50" rx="2" fill="#526B59"/>
-            <text x="242" y="146" text-anchor="middle" fill="#F2EBDD" font-weight="600">Claude</text><text x="242" y="162" text-anchor="middle" fill="#F2EBDD">classifier · router</text>
-            <g fill="#49372D"><rect x="362" y="60" width="140" height="50" rx="2"/><rect x="362" y="190" width="140" height="50" rx="2"/></g>
-            <text x="432" y="81" text-anchor="middle" fill="#F2EBDD" font-weight="600">Recruitment</text><text x="432" y="97" text-anchor="middle" fill="#C9C2B5">screen · reply · log</text>
-            <text x="432" y="211" text-anchor="middle" fill="#F2EBDD" font-weight="600">Onboarding</text><text x="432" y="227" text-anchor="middle" fill="#C9C2B5">90-day plan · welcome</text>
-            <text x="432" y="133" text-anchor="middle" fill="#5E5D57" font-size="10">→ Google Sheets</text>
-            <text x="432" y="263" text-anchor="middle" fill="#5E5D57" font-size="10">→ HR team alert</text>
-          </g>
-          <g fill="none" stroke="#7A6340" stroke-width="1.2">
-            <path d="M124 90 C150 90 150 140 178 145"/><path d="M124 210 C150 210 150 160 178 155"/>
-            <path d="M306 145 C334 140 334 85 362 85"/><path d="M306 155 C334 160 334 215 362 215"/>
-          </g>
-          <text x="20" y="40" font-family="IBM Plex Mono,monospace" font-size="10" fill="#7A6340">n8n · 31 nodes · one workflow</text>
-        </svg>
+        <img data-media="hr" class="wf" src="img/hr-workflow.webp" alt="The HR SuperAgent workflow in n8n: two inputs, a Claude classifier, then a recruitment branch and an onboarding branch" width="2000" height="749" loading="lazy" hidden>
         <!-- Job Application Tracker: two schedules -->
         <svg data-media="jobs" viewBox="0 0 520 300" role="img" aria-label="A daily schedule reads the jobs sheet, writes cover letters and routes each job to LinkedIn or Indeed; a second schedule every two days checks status, updates the sheet and emails a summary" hidden>
           <rect width="520" height="300" fill="#F2EBDD"/>
@@ -1114,6 +1097,7 @@ en:{
      role:'Designer & builder', stack:'n8n · Claude via Anthropic API · Gmail · Google Sheets', status:'Built — ready to connect',
      body:['Requests arrive by email or through a web form. A Claude-powered classifier reads each one and routes it to the right agent.',
            'Applications go to a recruitment screening agent that replies at the right tier and logs every candidate in Google Sheets. New hires go to an onboarding agent that drafts a 90-day plan, sends the welcome email and alerts the HR team — 31 nodes in a single workflow, modelled on a multi-agent HR reference architecture.'],
+     shots:{title:'Inside the n8n workflow', items:[['hr-intake','Intake — email and web form, read and routed by a Claude classifier'],['hr-recruitment','Recruitment branch — screening, logging and tiered replies'],['hr-onboarding','Onboarding branch — 90-day plan, logging, welcome email and HR alert']]},
      link:null},
     {key:'jobs', object:'Staircase', eyebrow:'Career automation · n8n', title:'Job Application Tracker', sub:'A demo workflow that works through a list of saved jobs and keeps each application status up to date.',
      role:'Adapted & configured', stack:'n8n · Google Sheets · Gmail', status:'Demo',
@@ -1124,7 +1108,7 @@ en:{
      role:'Designer & builder', stack:'Excel · HTML/JS demo', status:'Ready — Excel template and interactive demo',
      body:['Each person is rated on each skill from 1 (none) to 4 (expert), or X when the skill is not needed for the role. Every rating is compared with the target level for that skill and with the number of capable people the team needs.',
            'From there it shows team capability, under-covered skills, the top training priorities and the people who need the most support, with a one-page profile for each person. It comes as a one-page Excel template for up to 25 staff and 20 skills, plus an interactive demo with a fictional team, shown on request.'],
-     shots:{title:'Screens from the demo · fictional team', items:[['overview','Overview — team capability and training priorities'],['matrix','Skills matrix — ratings against target levels'],['profile','Individual profile — one person, skill by skill']]},
+     shots:{title:'Screens from the demo · fictional team', items:[['capability-overview','Overview — team capability and training priorities'],['capability-matrix','Skills matrix — ratings against target levels'],['capability-profile','Individual profile — one person, skill by skill']]},
      link:null},
     {key:'analytics', object:'Lounge table', eyebrow:'People analytics · Dashboard', title:'HR Analytics Dashboard', sub:'An HR dashboard that turns one CSV file into a clear people report.',
      role:'Designer & builder', stack:'AI-assisted build · CSV upload · Vercel-ready', status:'Built — standalone version in private testing',
@@ -1135,6 +1119,7 @@ en:{
      role:'Architect & builder', stack:'Claude API · n8n · Notion · HTML/JS', status:'In active development',
      body:['Athena is the single point where my instructions arrive. She holds the full context — goals, constraints, priorities — and delegates work to six specialist agents: Hermes for content, Apollo for research, Nexus for business development, Iris for operations, Fortuna for finance and Kronos for portfolio data.',
            'Instructions come in by chat or through an n8n webhook, and results and approvals come back to me. The aim is simple: remove execution friction so strategy gets the airtime.'],
+     shots:{title:'The orchestrator in n8n', items:[['athena-workflow','The full Master Orchestrator workflow'],['athena-entry','Entry — Telegram or the Athena OS dashboard, then Athena’s Claude brain with memory'],['athena-approval','Approval loop — I approve before Hermes starts, then approve the draft'],['athena-agents','Routing — research, business development, finance and KPI agents, each with a failure alert']]},
      link:{href:'index.html#agents', label:'See the constellation →'}},
     {key:'studio', object:'Indoor tree', eyebrow:'Brand & web · Creative work', title:'Eva’s Digital Studio', sub:'A trilingual personal site built as a quiet, explorable studio instead of a template.',
      role:'Creative direction · built with Claude', stack:'Design system · HTML/CSS/JS · EN / ID / 中文', status:'Live',
@@ -1165,6 +1150,7 @@ id:{
      role:'Perancang & pembangun', stack:'n8n · Claude melalui Anthropic API · Gmail · Google Sheets', status:'Selesai dibangun — siap dihubungkan',
      body:['Permintaan masuk melalui email atau formulir web. Pengklasifikasi bertenaga Claude membaca setiap permintaan dan meneruskannya ke agen yang tepat.',
            'Lamaran diteruskan ke agen penyaringan rekrutmen yang membalas sesuai tingkatannya dan mencatat setiap kandidat di Google Sheets. Karyawan baru diteruskan ke agen onboarding yang menyusun rencana 90 hari, mengirim email sambutan, dan memberi tahu tim HR — 31 node dalam satu alur kerja, mengacu pada arsitektur referensi HR multi-agen.'],
+     shots:{title:'Di dalam alur kerja n8n', items:[['hr-intake','Penerimaan — email dan formulir web, dibaca dan diarahkan oleh pengklasifikasi Claude'],['hr-recruitment','Cabang rekrutmen — penyaringan, pencatatan, dan balasan bertingkat'],['hr-onboarding','Cabang onboarding — rencana 90 hari, pencatatan, email sambutan, dan notifikasi HR']]},
      link:null},
     {key:'jobs', object:'Tangga', eyebrow:'Otomasi karier · n8n', title:'Job Application Tracker', sub:'Alur kerja demo yang memproses daftar lowongan tersimpan dan menjaga status setiap lamaran tetap terbaru.',
      role:'Mengadaptasi & mengonfigurasi', stack:'n8n · Google Sheets · Gmail', status:'Demo',
@@ -1175,7 +1161,7 @@ id:{
      role:'Perancang & pembangun', stack:'Excel · Demo HTML/JS', status:'Siap — templat Excel dan demo interaktif',
      body:['Setiap orang dinilai untuk setiap keterampilan dari 1 (belum ada) sampai 4 (ahli), atau X bila keterampilan itu tidak diperlukan untuk perannya. Setiap nilai dibandingkan dengan level target keterampilan tersebut dan dengan jumlah orang cakap yang dibutuhkan tim.',
            'Dari situ terlihat kapabilitas tim, keterampilan yang kekurangan orang, prioritas pelatihan utama, dan siapa yang paling butuh dukungan, lengkap dengan profil satu halaman untuk setiap orang. Tersedia sebagai templat Excel satu halaman untuk hingga 25 staf dan 20 keterampilan, ditambah demo interaktif dengan tim fiktif yang bisa ditunjukkan atas permintaan.'],
-     shots:{title:'Tampilan dari demo · tim fiktif', items:[['overview','Ringkasan — kapabilitas tim dan prioritas pelatihan'],['matrix','Matriks keterampilan — nilai dibandingkan level target'],['profile','Profil individu — satu orang, per keterampilan']]},
+     shots:{title:'Tampilan dari demo · tim fiktif', items:[['capability-overview','Ringkasan — kapabilitas tim dan prioritas pelatihan'],['capability-matrix','Matriks keterampilan — nilai dibandingkan level target'],['capability-profile','Profil individu — satu orang, per keterampilan']]},
      link:null},
     {key:'analytics', object:'Meja lounge', eyebrow:'People analytics · Dasbor', title:'HR Analytics Dashboard', sub:'Dasbor HR yang mengubah satu file CSV menjadi laporan SDM yang jelas.',
      role:'Perancang & pembangun', stack:'Bantuan AI · Unggah CSV · Siap di-deploy ke Vercel', status:'Selesai dibangun — versi mandiri masih diuji secara privat',
@@ -1186,6 +1172,7 @@ id:{
      role:'Arsitek & pembangun', stack:'Claude API · n8n · Notion · HTML/JS', status:'Dalam pengembangan aktif',
      body:['Athena adalah satu titik tempat semua arahan saya masuk. Ia memegang konteks penuh — tujuan, kendala, prioritas — dan mendelegasikan pekerjaan ke enam agen spesialis: Hermes untuk konten, Apollo untuk riset, Nexus untuk pengembangan bisnis, Iris untuk operasional, Fortuna untuk keuangan, dan Kronos untuk data portofolio.',
            'Arahan masuk melalui chat atau webhook n8n, lalu hasil dan persetujuan kembali kepada saya. Tujuannya sederhana: menghilangkan hambatan eksekusi agar strategi mendapat lebih banyak perhatian.'],
+     shots:{title:'Orkestrator di n8n', items:[['athena-workflow','Alur kerja Master Orchestrator secara utuh'],['athena-entry','Masuk — lewat Telegram atau dasbor Athena OS, lalu otak Claude milik Athena dengan memori'],['athena-approval','Alur persetujuan — saya menyetujui sebelum Hermes mulai, lalu menyetujui drafnya'],['athena-agents','Perutean — agen riset, pengembangan bisnis, keuangan, dan KPI, masing-masing dengan peringatan bila gagal']]},
      link:{href:'index.html#agents', label:'Lihat konstelasinya →'}},
     {key:'studio', object:'Pohon di dalam', eyebrow:'Merek & web · Karya kreatif', title:'Eva’s Digital Studio', sub:'Situs pribadi tiga bahasa yang dibangun sebagai studio yang tenang untuk dijelajahi, bukan templat.',
      role:'Arahan kreatif · dibangun bersama Claude', stack:'Sistem desain · HTML/CSS/JS · EN / ID / 中文', status:'Aktif',
@@ -1216,6 +1203,7 @@ zh:{
      role:'设计与搭建', stack:'n8n · 通过Anthropic API调用Claude · Gmail · Google Sheets', status:'已搭建完成，待接入',
      body:['请求通过邮件或网页表单进入。由Claude驱动的分类器读取每一条请求，并将其转给合适的智能体。',
            '求职申请交给招聘筛选智能体，按不同层级回复并将每位候选人记录在Google Sheets中；新员工交给入职智能体，起草90天计划、发送欢迎邮件并通知HR团队——31个节点集成于单一工作流，参照多智能体HR参考架构设计。'],
+     shots:{title:'n8n工作流内部', items:[['hr-intake','接收——邮件与网页表单，由Claude分类器读取并分派'],['hr-recruitment','招聘分支——筛选、记录与分级回复'],['hr-onboarding','入职分支——90天计划、记录、欢迎邮件与HR通知']]},
      link:null},
     {key:'jobs', object:'楼梯', eyebrow:'求职自动化 · n8n', title:'Job Application Tracker', sub:'一个演示工作流：处理已保存的职位清单，并让每份申请的状态保持最新。',
      role:'改编与配置', stack:'n8n · Google Sheets · Gmail', status:'演示版',
@@ -1226,7 +1214,7 @@ zh:{
      role:'设计与搭建', stack:'Excel · HTML/JS演示', status:'已完成——Excel模板与交互式演示',
      body:['每位成员的每项技能按1（不具备）到4（专家）评分；若该岗位不需要这项技能，则标为X。每个评分都会与该技能的目标等级，以及团队所需的胜任人数进行比较。',
            '据此显示团队能力、人手不足的技能、优先培训事项和最需要支持的成员，并为每人生成一页个人档案。提供一页式Excel模板（最多25名员工、20项技能），另附使用虚构团队数据的交互式演示，可应要求展示。'],
-     shots:{title:'演示界面 · 虚构团队', items:[['overview','总览——团队能力与培训优先事项'],['matrix','技能矩阵——评分与目标等级对比'],['profile','个人档案——逐项技能查看']]},
+     shots:{title:'演示界面 · 虚构团队', items:[['capability-overview','总览——团队能力与培训优先事项'],['capability-matrix','技能矩阵——评分与目标等级对比'],['capability-profile','个人档案——逐项技能查看']]},
      link:null},
     {key:'analytics', object:'休息区茶几', eyebrow:'人才分析 · 仪表板', title:'HR Analytics Dashboard', sub:'只需一个CSV文件，即可生成清晰的人力资源报告。',
      role:'设计与搭建', stack:'AI辅助搭建 · CSV上传 · 可部署至Vercel', status:'已搭建完成——独立版仍在内部测试',
@@ -1237,6 +1225,7 @@ zh:{
      role:'架构设计与搭建', stack:'Claude API · n8n · Notion · HTML/JS', status:'持续开发中',
      body:['Athena是我所有指令的唯一入口。她掌握完整的上下文——目标、约束与优先级——并将工作分派给六位专业智能体：Hermes负责内容，Apollo负责研究，Nexus负责业务拓展，Iris负责运营，Fortuna负责财务，Kronos负责投资组合数据。',
            '指令通过聊天或n8n webhook进入，结果与审批再回到我这里。目标很简单：消除执行摩擦，让战略获得更多空间。'],
+     shots:{title:'n8n中的协调器', items:[['athena-workflow','完整的Master Orchestrator工作流'],['athena-entry','入口——通过Telegram或Athena OS仪表板进入，再由带记忆的Claude核心处理'],['athena-approval','审批流程——Hermes开始前需我批准，草稿完成后再次确认'],['athena-agents','分派——研究、业务拓展、财务与KPI智能体，各自配有失败提醒']]},
      link:{href:'index.html#agents', label:'查看星图 →'}},
     {key:'studio', object:'室内树', eyebrow:'品牌与网站 · 创意作品', title:'Eva’s Digital Studio', sub:'一个三语个人网站，被打造成可以安静探索的工作室，而非模板。',
      role:'创意指导 · 与Claude共同搭建', stack:'设计系统 · HTML/CSS/JS · EN / ID / 中文', status:'已上线',
@@ -1252,6 +1241,8 @@ zh:{
      link:null}
   ]
 }};
+
+const SHOT_MARK = {skills:'Eva Yuliana · Demo', hr:'Eva Yuliana · n8n', athena:'Eva Yuliana · n8n'};
 
 const REEL = {
   feature:{id:'9yIpVHopVOY', title:'Tokyo Supercar Tournament', len:'0:50'},
@@ -1362,7 +1353,7 @@ function fill(i){
   const l = $('#cLink'); if (p.link){ l.hidden = false; l.href = p.link.href; l.textContent = p.link.label; } else l.hidden = true;
   $$('.media > *').forEach(m => m.toggleAttribute('hidden', m.dataset.media !== p.key));
   renderReel(p);
-  $('#shots').innerHTML = p.shots ? `<h3>${p.shots.title}</h3>` + p.shots.items.map(([f, c]) => `<figure class="shot"><div class="frame"><img src="img/capability-${f}.webp" alt="${c}" loading="lazy" width="1400" height="887" draggable="false" oncontextmenu="return false"></div><figcaption>${c}</figcaption></figure>`).join('') : '';
+  $('#shots').innerHTML = p.shots ? `<h3>${p.shots.title}</h3>` + p.shots.items.map(([f, c]) => `<figure class="shot"><div class="frame" data-mark="${SHOT_MARK[p.key] || 'Eva Yuliana'}"><img src="img/${f}.webp" alt="${c}" loading="lazy" draggable="false" oncontextmenu="return false"></div><figcaption>${c}</figcaption></figure>`).join('') : '';
   $('#cCount').textContent = `${String(i+1).padStart(2,'0')} / ${String(P[lang].projects.length).padStart(2,'0')}`;
 }
 let lastFocus = null;
