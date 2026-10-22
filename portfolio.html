@@ -390,7 +390,7 @@ body.portfolio{overflow:hidden}
 .studio.pf.inside .drawer{opacity:0;pointer-events:none;transition:opacity .5s var(--ease)}
 
 .back-btn{position:absolute;left:max(var(--space-6),calc((100vw - var(--wrap))/2 + var(--space-6)));top:92px;z-index:5;background:var(--scrim);color:var(--ivory);border-color:var(--greige)}
-.pf-hint{position:absolute;left:50%;bottom:88px;transform:translateX(-50%);z-index:5;margin:0;background:var(--scrim);color:var(--ivory);border-radius:var(--radius-pill);padding:8px 16px;font-size:13px;line-height:18px;text-align:center;opacity:0;transition:opacity .6s var(--ease) 1.4s;pointer-events:none;white-space:nowrap}
+.pf-hint{position:absolute;left:50%;bottom:calc(var(--space-6) + var(--pf-list-h,52px) + 12px);transform:translateX(-50%);z-index:5;margin:0;background:var(--scrim);color:var(--ivory);border-radius:var(--radius-pill);padding:8px 16px;font-size:13px;line-height:18px;text-align:center;opacity:0;transition:opacity .6s var(--ease) 1.4s;pointer-events:none;white-space:nowrap}
 .studio.pf.inside .pf-hint{opacity:1}
 .studio.pf.reading .pf-hint{opacity:0;transition-delay:0s}
 
@@ -1323,6 +1323,12 @@ if (location.hash === '#inside') goInside(true);
 
 EYSMusic(document.getElementById('musicBtn'),'rain','eys_music');
 
+</script>
+<script>
+/* keep the room hint above the project bar, however many rows the bar wraps to */
+(function(){var l=document.getElementById('projects'),r=document.documentElement;if(!l)return;
+function f(){r.style.setProperty('--pf-list-h',l.offsetHeight+'px')}
+f();window.addEventListener('resize',f);if(window.ResizeObserver)new ResizeObserver(f).observe(l);})();
 </script>
 </body>
 </html>
