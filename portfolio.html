@@ -613,26 +613,99 @@ body.portfolio{overflow:hidden}
     <div class="scroll">
       <div class="media">
         <!-- Athena: constellation -->
-        <svg data-media="athena" viewBox="0 0 520 300" role="img" aria-label="Athena at the centre with six agents around her">
-          <rect width="520" height="300" fill="#343633"/>
-          <defs><radialGradient id="gA" cx="35%" cy="30%"><stop offset="0" stop-color="#C9D6CB"/><stop offset=".55" stop-color="#526B59"/><stop offset="1" stop-color="#25302A"/></radialGradient>
-          <radialGradient id="halo"><stop offset="0" stop-color="#C9D6CB" stop-opacity=".35"/><stop offset="1" stop-color="#C9D6CB" stop-opacity="0"/></radialGradient></defs>
-          <g stroke="#B49A70" stroke-opacity=".35" fill="none">
-            <path d="M260 155 L150 75"/><path d="M260 155 L370 75"/><path d="M260 155 L440 160"/><path d="M260 155 L370 240"/><path d="M260 155 L150 240"/><path d="M260 155 L80 160"/>
-            <path d="M150 75 Q260 40 370 75" stroke-opacity=".12"/><path d="M370 240 Q260 275 150 240" stroke-opacity=".12"/>
+        <svg data-media="athena" viewBox="0 0 520 300" role="img" aria-label="Athena as an Earth-like planet at the centre, with six agent planets in orbit around her">
+          <defs>
+            <radialGradient id="pSky" cx="50%" cy="50%" r="70%"><stop offset="0" stop-color="#3B3D39"/><stop offset=".6" stop-color="#2C2D2A"/><stop offset="1" stop-color="#1F201E"/></radialGradient>
+            <radialGradient id="pShade" cx="32%" cy="28%" r="80%"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".75" stop-color="#000" stop-opacity=".35"/><stop offset="1" stop-color="#000" stop-opacity=".7"/></radialGradient>
+            <radialGradient id="pEarth" cx="40%" cy="35%"><stop offset="0" stop-color="#5E93A8"/><stop offset=".6" stop-color="#2F5C6E"/><stop offset="1" stop-color="#1B3440"/></radialGradient>
+            <radialGradient id="pAtmo"><stop offset=".72" stop-color="#A9D0DA" stop-opacity="0"/><stop offset=".86" stop-color="#A9D0DA" stop-opacity=".35"/><stop offset="1" stop-color="#A9D0DA" stop-opacity="0"/></radialGradient>
+            <radialGradient id="pHalo"><stop offset="0" stop-color="#C9D6CB" stop-opacity=".28"/><stop offset="1" stop-color="#C9D6CB" stop-opacity="0"/></radialGradient>
+            <radialGradient id="pSun" cx="45%" cy="40%"><stop offset="0" stop-color="#FFF4D6"/><stop offset=".35" stop-color="#F2CF8A"/><stop offset=".75" stop-color="#D49A4E"/><stop offset="1" stop-color="#9A6230"/></radialGradient>
+            <radialGradient id="pSunGlow"><stop offset="0" stop-color="#F2CF8A" stop-opacity=".55"/><stop offset="1" stop-color="#F2CF8A" stop-opacity="0"/></radialGradient>
+            <radialGradient id="pIce" cx="40%" cy="35%"><stop offset="0" stop-color="#E4EFE8"/><stop offset=".7" stop-color="#A9BBAE"/><stop offset="1" stop-color="#6E8576"/></radialGradient>
+            <radialGradient id="pGold" cx="40%" cy="35%"><stop offset="0" stop-color="#F3E3B8"/><stop offset=".7" stop-color="#C9A866"/><stop offset="1" stop-color="#8C6E36"/></radialGradient>
+            <radialGradient id="pStone" cx="40%" cy="35%"><stop offset="0" stop-color="#D8D2C4"/><stop offset=".7" stop-color="#A39C8E"/><stop offset="1" stop-color="#6E685D"/></radialGradient>
+            <clipPath id="cAthena"><circle cx="260" cy="150" r="34"/></clipPath>
+            <clipPath id="cApollo"><circle cx="440" cy="160" r="17"/></clipPath>
+            <clipPath id="cNexus"><circle cx="370" cy="240" r="19"/></clipPath>
+            <clipPath id="cFortuna"><circle cx="80" cy="160" r="15"/></clipPath>
+            <clipPath id="cKronos"><circle cx="150" cy="75" r="14"/></clipPath>
+          </defs>
+          <rect width="520" height="300" fill="url(#pSky)"/>
+          <!-- stars -->
+          <g fill="#F2EBDD">
+            <circle cx="34" cy="28" r=".9" opacity=".7"/><circle cx="92" cy="112" r=".6" opacity=".5"/><circle cx="212" cy="36" r=".8" opacity=".6"/><circle cx="300" cy="22" r=".6" opacity=".5"/><circle cx="476" cy="40" r="1" opacity=".7"/>
+            <circle cx="500" cy="236" r=".7" opacity=".5"/><circle cx="448" cy="276" r=".6" opacity=".4"/><circle cx="268" cy="282" r=".8" opacity=".5"/><circle cx="48" cy="262" r=".7" opacity=".6"/><circle cx="20" cy="190" r=".5" opacity=".4"/>
+            <circle cx="214" cy="232" r=".5" opacity=".4"/><circle cx="318" cy="96" r=".5" opacity=".4"/><circle cx="410" cy="118" r=".6" opacity=".5"/><circle cx="118" cy="200" r=".5" opacity=".4"/><circle cx="246" cy="64" r=".5" opacity=".35"/>
           </g>
-          <path d="M260 155 L370 75" stroke="#D9C6A0" stroke-width="1.6"/>
-          <circle cx="330" cy="104" r="3" fill="#F2EBDD"/><circle cx="330" cy="104" r="10" fill="#D9C6A0" fill-opacity=".25"/>
-          <circle cx="260" cy="155" r="70" fill="url(#halo)"/>
-          <circle cx="260" cy="155" r="34" fill="url(#gA)"/><circle cx="260" cy="155" r="40" fill="none" stroke="#B49A70"/>
+          <!-- orbits and delegation lines -->
+          <ellipse cx="260" cy="155" rx="190" ry="92" fill="none" stroke="#B49A70" stroke-opacity=".14"/>
+          <ellipse cx="260" cy="155" rx="118" ry="58" fill="none" stroke="#B49A70" stroke-opacity=".1"/>
+          <g stroke="#B49A70" stroke-opacity=".32" fill="none">
+            <path d="M260 150 L150 75"/><path d="M260 150 L440 160"/><path d="M260 150 L370 240"/><path d="M260 150 L150 240"/><path d="M260 150 L80 160"/>
+          </g>
+          <path d="M260 150 L370 75" stroke="#D9C6A0" stroke-width="1.6"/>
+          <circle cx="322" cy="108" r="3" fill="#F2EBDD"/><circle cx="322" cy="108" r="10" fill="#D9C6A0" fill-opacity=".25"/>
+
+          <!-- ATHENA: Earth-like -->
+          <circle cx="260" cy="150" r="72" fill="url(#pHalo)"/>
+          <circle cx="260" cy="150" r="42" fill="url(#pAtmo)"/>
+          <circle cx="260" cy="150" r="34" fill="url(#pEarth)"/>
+          <g clip-path="url(#cAthena)">
+            <path d="M232 128 C240 120 254 122 258 130 C262 138 252 142 246 150 C240 158 230 154 228 146 C226 138 226 134 232 128Z" fill="#6E8F62"/>
+            <path d="M266 140 C276 134 290 138 292 150 C294 160 284 170 274 168 C266 166 268 158 262 154 C258 150 260 144 266 140Z" fill="#7C9A6B"/>
+            <path d="M246 166 C252 162 260 166 258 174 C256 180 248 180 244 176 C242 172 242 168 246 166Z" fill="#6E8F62"/>
+            <path d="M234 122 C248 116 266 118 280 124" fill="none" stroke="#F2EBDD" stroke-opacity=".55" stroke-width="2.4" stroke-linecap="round"/>
+            <path d="M240 160 C254 156 270 158 288 164" fill="none" stroke="#F2EBDD" stroke-opacity=".35" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="260" cy="150" r="34" fill="url(#pShade)"/>
+          </g>
+          <circle cx="260" cy="150" r="40" fill="none" stroke="#B49A70" stroke-opacity=".8"/>
+
+          <!-- HERMES: sun -->
+          <circle cx="370" cy="75" r="34" fill="url(#pSunGlow)"/>
+          <circle cx="370" cy="75" r="17" fill="url(#pSun)"/>
+
+          <!-- KRONOS: ringed planet -->
+          <ellipse cx="150" cy="75" rx="27" ry="7" fill="none" stroke="#C9C2B5" stroke-opacity=".55" stroke-width="3" transform="rotate(-16 150 75)"/>
+          <circle cx="150" cy="75" r="14" fill="url(#pStone)"/>
+          <g clip-path="url(#cKronos)"><rect x="130" y="70" width="40" height="3" fill="#8A877F" opacity=".5" transform="rotate(-16 150 75)"/><circle cx="150" cy="75" r="14" fill="url(#pShade)"/></g>
+          <path d="M126 82 A27 7 -16 0 0 174 68" fill="none" stroke="#E2DCCF" stroke-opacity=".85" stroke-width="3" transform="rotate(0)"/>
+
+          <!-- APOLLO: pale banded giant -->
+          <g clip-path="url(#cApollo)">
+            <rect x="420" y="140" width="40" height="40" fill="#D8CFBF"/>
+            <rect x="420" y="148" width="40" height="4" fill="#BFB29C"/><rect x="420" y="156" width="40" height="3" fill="#E8E1D3"/><rect x="420" y="162" width="40" height="5" fill="#B5A68C"/><rect x="420" y="170" width="40" height="3" fill="#C9BDA8"/>
+            <circle cx="440" cy="160" r="17" fill="url(#pShade)"/>
+          </g>
+
+          <!-- NEXUS: copper gas giant with a storm -->
+          <g clip-path="url(#cNexus)">
+            <rect x="350" y="220" width="40" height="40" fill="#C79168"/>
+            <rect x="350" y="226" width="40" height="5" fill="#A86E4A"/><rect x="350" y="234" width="40" height="4" fill="#DDB792"/><rect x="350" y="241" width="40" height="6" fill="#9C6442"/><rect x="350" y="250" width="40" height="4" fill="#D2A47E"/>
+            <ellipse cx="377" cy="244" rx="4.5" ry="2.6" fill="#8A4F33"/>
+            <circle cx="370" cy="240" r="19" fill="url(#pShade)"/>
+          </g>
+
+          <!-- IRIS: icy moon -->
+          <circle cx="150" cy="240" r="15" fill="url(#pIce)"/>
+          <g fill="#6E8576" fill-opacity=".35"><circle cx="145" cy="235" r="2.6"/><circle cx="155" cy="244" r="2"/><circle cx="147" cy="247" r="1.4"/></g>
+          <circle cx="150" cy="240" r="15" fill="url(#pShade)"/>
+
+          <!-- FORTUNA: golden planet -->
+          <g clip-path="url(#cFortuna)">
+            <circle cx="80" cy="160" r="15" fill="url(#pGold)"/>
+            <rect x="60" y="154" width="40" height="2.4" fill="#A88A4C" opacity=".45"/><rect x="60" y="163" width="40" height="2" fill="#F3E3B8" opacity=".4"/>
+            <circle cx="80" cy="160" r="15" fill="url(#pShade)"/>
+          </g>
+
           <g font-family="Inter,system-ui,sans-serif" font-size="10" letter-spacing="1.5" fill="#F2EBDD" text-anchor="middle">
             <text x="260" y="212" font-weight="600" fill="#D9C6A0">ATHENA</text>
-            <circle cx="150" cy="75" r="15" fill="#8A877F"/><text x="150" y="104">KRONOS</text>
-            <circle cx="370" cy="75" r="15" fill="#B49A70"/><text x="370" y="104">HERMES</text>
-            <circle cx="440" cy="160" r="15" fill="#C9C2B5"/><text x="440" y="189">APOLLO</text>
-            <circle cx="370" cy="240" r="15" fill="#B07A55"/><text x="370" y="269">NEXUS</text>
-            <circle cx="150" cy="240" r="15" fill="#A9BBAE"/><text x="150" y="269">IRIS</text>
-            <circle cx="80" cy="160" r="15" fill="#D8C7A0"/><text x="80" y="189">FORTUNA</text>
+            <text x="150" y="104">KRONOS</text>
+            <text x="370" y="106">HERMES</text>
+            <text x="440" y="192">APOLLO</text>
+            <text x="370" y="274">NEXUS</text>
+            <text x="150" y="270">IRIS</text>
+            <text x="80" y="190">FORTUNA</text>
           </g>
         </svg>
         <!-- HR SuperAgent: workflow -->
