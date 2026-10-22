@@ -457,6 +457,16 @@ body.portfolio{overflow:hidden}
 .card-pf .btn-ghost{color:var(--charcoal);border-color:var(--border-control)}
 .card-pf .btn-ghost:hover{border-color:var(--charcoal)}
 
+/* screenshots inside a case card (demo views, watermarked) */
+.shots:not(:empty){margin-top:var(--space-6)}
+.shots h3{font:600 12px/16px var(--font-sans);letter-spacing:.12em;text-transform:uppercase;color:var(--metal);margin:0 0 var(--space-2)}
+:lang(zh-Hans) .shots h3{letter-spacing:.04em}
+.shot{margin:0 0 var(--space-4)}
+.shot .frame{position:relative;border-radius:var(--radius-sm);overflow:hidden;outline:1px solid rgba(180,154,112,.45);outline-offset:-1px;background:#f4f5f7}
+.shot img{width:100%;height:auto;display:block;-webkit-user-drag:none;user-select:none;pointer-events:none}
+.shot .frame::after{content:"Eva Yuliana · Demo";position:absolute;right:8px;bottom:8px;font:600 11px/14px var(--font-sans);letter-spacing:.08em;color:rgba(52,54,51,.55);background:rgba(242,235,221,.8);border-radius:var(--radius-pill);padding:3px 9px}
+.shot figcaption{margin-top:6px;font-size:14px;line-height:20px;font-weight:500}
+
 /* creative reel: video gallery inside the case card */
 .media>.reel-feature{outline:0;border-radius:0}
 .reel:not(:empty){margin-top:var(--space-6)}
@@ -721,6 +731,7 @@ body.portfolio{overflow:hidden}
           <div><dt id="cStatusK">Status</dt><dd id="cStatus"></dd></div>
         </dl>
         <div id="cBody"></div>
+        <div class="shots" id="shots"></div>
         <div class="reel" id="reel"></div>
         <a class="btn btn-ghost" id="cLink" href="#" hidden></a>
         <div class="card-contact">
@@ -1040,6 +1051,7 @@ en:{
      role:'Designer & builder', stack:'Excel · HTML/JS demo', status:'Ready — Excel template and interactive demo',
      body:['Each person is rated on each skill from 1 (none) to 4 (expert), or X when the skill is not needed for the role. Every rating is compared with the target level for that skill and with the number of capable people the team needs.',
            'From there it shows team capability, under-covered skills, the top training priorities and the people who need the most support, with a one-page profile for each person. It comes as a one-page Excel template for up to 25 staff and 20 skills, plus an interactive demo with a fictional team, shown on request.'],
+     shots:{title:'Screens from the demo · fictional team', items:[['overview','Overview — team capability and training priorities'],['matrix','Skills matrix — ratings against target levels'],['profile','Individual profile — one person, skill by skill']]},
      link:null},
     {key:'analytics', object:'Lounge table', eyebrow:'People analytics · Dashboard', title:'HR Analytics Dashboard', sub:'An HR dashboard that turns one CSV file into a clear people report.',
      role:'Designer & builder', stack:'AI-assisted build · CSV upload · Vercel-ready', status:'Built — standalone version in private testing',
@@ -1090,6 +1102,7 @@ id:{
      role:'Perancang & pembangun', stack:'Excel · Demo HTML/JS', status:'Siap — templat Excel dan demo interaktif',
      body:['Setiap orang dinilai untuk setiap keterampilan dari 1 (belum ada) sampai 4 (ahli), atau X bila keterampilan itu tidak diperlukan untuk perannya. Setiap nilai dibandingkan dengan level target keterampilan tersebut dan dengan jumlah orang cakap yang dibutuhkan tim.',
            'Dari situ terlihat kapabilitas tim, keterampilan yang kekurangan orang, prioritas pelatihan utama, dan siapa yang paling butuh dukungan, lengkap dengan profil satu halaman untuk setiap orang. Tersedia sebagai templat Excel satu halaman untuk hingga 25 staf dan 20 keterampilan, ditambah demo interaktif dengan tim fiktif yang bisa ditunjukkan atas permintaan.'],
+     shots:{title:'Tampilan dari demo · tim fiktif', items:[['overview','Ringkasan — kapabilitas tim dan prioritas pelatihan'],['matrix','Matriks keterampilan — nilai dibandingkan level target'],['profile','Profil individu — satu orang, per keterampilan']]},
      link:null},
     {key:'analytics', object:'Meja lounge', eyebrow:'People analytics · Dasbor', title:'HR Analytics Dashboard', sub:'Dasbor HR yang mengubah satu file CSV menjadi laporan SDM yang jelas.',
      role:'Perancang & pembangun', stack:'Bantuan AI · Unggah CSV · Siap di-deploy ke Vercel', status:'Selesai dibangun — versi mandiri masih diuji secara privat',
@@ -1140,6 +1153,7 @@ zh:{
      role:'设计与搭建', stack:'Excel · HTML/JS演示', status:'已完成——Excel模板与交互式演示',
      body:['每位成员的每项技能按1（不具备）到4（专家）评分；若该岗位不需要这项技能，则标为X。每个评分都会与该技能的目标等级，以及团队所需的胜任人数进行比较。',
            '据此显示团队能力、人手不足的技能、优先培训事项和最需要支持的成员，并为每人生成一页个人档案。提供一页式Excel模板（最多25名员工、20项技能），另附使用虚构团队数据的交互式演示，可应要求展示。'],
+     shots:{title:'演示界面 · 虚构团队', items:[['overview','总览——团队能力与培训优先事项'],['matrix','技能矩阵——评分与目标等级对比'],['profile','个人档案——逐项技能查看']]},
      link:null},
     {key:'analytics', object:'休息区茶几', eyebrow:'人才分析 · 仪表板', title:'HR Analytics Dashboard', sub:'只需一个CSV文件，即可生成清晰的人力资源报告。',
      role:'设计与搭建', stack:'AI辅助搭建 · CSV上传 · 可部署至Vercel', status:'已搭建完成——独立版仍在内部测试',
@@ -1275,6 +1289,7 @@ function fill(i){
   const l = $('#cLink'); if (p.link){ l.hidden = false; l.href = p.link.href; l.textContent = p.link.label; } else l.hidden = true;
   $$('.media > *').forEach(m => m.toggleAttribute('hidden', m.dataset.media !== p.key));
   renderReel(p);
+  $('#shots').innerHTML = p.shots ? `<h3>${p.shots.title}</h3>` + p.shots.items.map(([f, c]) => `<figure class="shot"><div class="frame"><img src="img/capability-${f}.webp" alt="${c}" loading="lazy" width="1400" height="887" draggable="false" oncontextmenu="return false"></div><figcaption>${c}</figcaption></figure>`).join('') : '';
   $('#cCount').textContent = `${String(i+1).padStart(2,'0')} / ${String(P[lang].projects.length).padStart(2,'0')}`;
 }
 let lastFocus = null;
