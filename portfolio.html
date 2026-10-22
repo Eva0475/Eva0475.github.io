@@ -979,7 +979,7 @@ function Ambient(name){
    when it was left on (browsers never allow sound before the visitor interacts). */
 const LBL = { en: ['Play background music', 'Pause background music'], id: ['Putar musik latar', 'Jeda musik latar'], zh: ['播放背景音乐', '暂停背景音乐'] };
 /* Recorded track (used instead of the generated sound when set). Same controls: off by default, fades in and out. */
-const EYS_TRACK = 'audio/zen-piano.mp3', TRACK_VOL = .85; /* 'Zen Piano' by marlowemusic, Pixabay Content License */
+const EYS_TRACK = 'audio/zen-piano-v3.mp3', TRACK_VOL = 1; /* 'Zen Piano' by marlowemusic, Pixabay Content License */
 function Track(src){
   let el = null, fade = 0;
   const ramp = (to, ms, done) => { clearInterval(fade); const from = el.volume, n = Math.max(1, Math.round(ms / 50)); let k = 0;
