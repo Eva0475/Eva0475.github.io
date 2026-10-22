@@ -391,9 +391,24 @@ dialog::backdrop{background:rgba(30,28,26,.7)}
 /* Aslan photos: always show the whole picture (no cropping), on a dark mat */
 .dlg img#aslanBig{object-fit:contain;background:#2a2826}
 @media (max-width:760px){ .dlg img#aslanBig{height:auto;max-height:56svh;width:100%} }
+/* identity strap: says who Eva is in the first seconds, without covering the studio */
+.strap{position:absolute;left:50%;bottom:var(--space-6);transform:translateX(-50%);z-index:3;display:flex;align-items:center;gap:var(--space-4);max-width:min(760px,calc(100vw - 2*var(--space-6)));background:var(--scrim);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid rgba(180,154,112,.5);border-radius:var(--radius-md);padding:12px 12px 12px 20px;color:var(--ivory)}
+.strap p{margin:0;font-size:14px;line-height:21px;text-align:left;hyphens:none}
+.strap strong{font-weight:600;color:var(--ivory)}
+.strap .sep{color:var(--brass)}
+.strap-cta{flex:none;font:500 13px/18px var(--font-sans);color:var(--charcoal);background:var(--brass);border-radius:var(--radius-pill);padding:8px 14px;text-decoration:none;white-space:nowrap}
+.strap-cta:hover{filter:brightness(1.08)}
+@media (max-width:760px){
+  .strap{bottom:78px;left:var(--space-4);right:var(--space-4);transform:none;max-width:none;flex-direction:column;align-items:flex-start;gap:var(--space-2);padding:12px 14px}
+  .strap p{font-size:13px;line-height:19px}
+  .strap .sep{display:none}
+  .strap strong{display:block}
+}
+/* reviews stay hidden until the first approved review exists */
+.no-reviews #reviews,.no-reviews a[href="#reviews"],.no-reviews [data-go="reviews"],.no-reviews li:has(> a[href="#reviews"]){display:none!important}
 </style>
 </head>
-<body>
+<body class="no-reviews">
 <a class="skip" href="#about" data-i18n="skip">Skip to content</a>
 
 <header class="nav" data-mode="scene" id="nav">
@@ -461,6 +476,7 @@ dialog::backdrop{background:rgba(30,28,26,.7)}
   <button class="drawer-tab" id="drawerTab" aria-expanded="false" aria-controls="intro"><span class="paw" aria-hidden="true"></span><span class="tab-name" data-i18n="tab.about">About Me</span></button>
   </div>
   <div class="swipe-hint" id="swipeHint" aria-hidden="true"><span class="arr">⟵</span><span data-i18n="hero.swipe">Swipe to explore the studio</span><span class="arr">⟶</span></div>
+  <div class="strap" id="strap"><p><strong data-i18n="strap.what">HR Transformation &amp; AI Automation</strong><span class="sep" aria-hidden="true"> · </span><span data-i18n="strap.where">20+ years across Indonesia, Australia, Singapore &amp; Hong Kong</span></p><a href="#contact" class="strap-cta" data-i18n="strap.cta">Work with me →</a></div>
   <a class="scroll-cue" href="#about"><span class="line"></span><span data-i18n="hero.enter">Enter the studio</span></a>
 </section>
 
@@ -469,9 +485,9 @@ dialog::backdrop{background:rgba(30,28,26,.7)}
   <div class="wrap">
     <div class="stats reveal">
       <div class="stat"><div class="label" data-i18n="stat.exp.label">Experience</div><div class="val">20+</div><div class="sub" data-i18n="stat.exp.sub">Years HR Transformation</div></div>
-      <div class="stat"><div class="label" data-i18n="stat.profile.label">Profile</div><div class="val">ENTJ-A</div><div class="sub" data-i18n="stat.profile.sub">Commander · Aries</div></div>
+      <div class="stat"><div class="label" data-i18n="stat.profile.label">Profile</div><div class="val">4</div><div class="sub" data-i18n="stat.profile.sub">ID · AU · SG · HK</div></div>
       <div class="stat"><div class="label" data-i18n="stat.focus.label">Focus</div><div class="val" data-i18n="stat.focus.val">Remote</div><div class="sub" data-i18n="stat.focus.sub">Global Consulting</div></div>
-      <div class="stat"><div class="label" data-i18n="stat.agents.label">AI Agents</div><div class="val">7</div><div class="sub" data-i18n="stat.agents.sub">Active · Athena-Led</div></div>
+      <div class="stat"><div class="label" data-i18n="stat.agents.label">AI Agents</div><div class="val">7</div><div class="sub" data-i18n="stat.agents.sub">Built · Now in pilot</div></div>
     </div>
     <div class="about-grid">
       <div>
@@ -954,14 +970,15 @@ en:{
   'room.library':'Library','room.desk':'Desk','room.stair':'Staircase','room.stone':'Garden stone','room.bridge':'Bridge','room.pond':'Lotus pond','room.paw':'Paw print',
   'hero.role':'HR Transformation · AI Automation · Human-AI Bridge',
   'hero.desc':'20+ years transforming organizations through structured HR strategy. I build systems, frameworks and high-leverage processes that produce measurable outcomes — and bring the same care to creative work.',
+  'strap.what':'HR Transformation & AI Automation','strap.where':'20+ years across Indonesia, Australia, Singapore & Hong Kong','strap.cta':'Work with me →',
   'hero.cta1':'Work With Me','hero.cta2':'My AI System →','hero.enter':'Enter the studio','hero.swipe':'Swipe to explore the studio',
   'stat.exp.label':'Experience','stat.exp.sub':'Years HR Transformation',
-  'stat.profile.label':'Profile','stat.profile.sub':'Commander · Aries',
+  'stat.profile.label':'Countries','stat.profile.sub':'ID · AU · SG · HK',
   'stat.focus.label':'Focus','stat.focus.val':'Remote','stat.focus.sub':'Global Consulting',
-  'stat.agents.label':'AI Agents','stat.agents.sub':'Active · Athena-Led',
+  'stat.agents.label':'AI Agents','stat.agents.sub':'Built · Now in pilot',
   'about.tag':'Profile','about.h2':'Strategy. Structure.<br>Measurable Results.',
   'about.p1':"I've spent over two decades in the trenches of HR transformation — not as a generalist, but as a <strong>strategic architect</strong>. My work sits at the intersection of organizational design, talent systems, and leadership development, with a consistent focus on building structures that scale.",
-  'about.p2':"As an <strong>ENTJ-A Commander</strong>, I default to frameworks over feelings, and I build systems that don't depend on constant supervision to run. That same philosophy now drives how I operate: with a personal AI infrastructure that handles execution while I focus on strategy and client outcomes.",
+  'about.p2':"My style is <strong>structure that serves people</strong>: clear frameworks, fair processes and systems that keep running without constant supervision, so leaders and teams can focus on the work that matters. I now apply the same thinking to AI, building a personal AI system that handles routine execution while I focus on strategy and client outcomes.",
   'about.p3':'Based in <strong>Jakarta, Indonesia</strong>, I work with organizations and individuals globally, bringing enterprise-grade HR thinking to teams that need clarity, structure, and a roadmap that actually works.',
   'about.p4':'Strategy is my main craft. Alongside consulting I run a <strong>creative practice</strong> — AI short films, visual content and digital products — built with the same structure and attention to detail.',
   'profile.base':'Base','profile.domain':'Domain','profile.exp':'Experience','profile.approach':'Approach','profile.tools':'Tools','profile.stack':'AI Stack',
@@ -1018,14 +1035,15 @@ id:{
   'room.library':'Perpustakaan','room.desk':'Meja Kerja','room.stair':'Tangga','room.stone':'Batu Taman','room.bridge':'Jembatan','room.pond':'Kolam Teratai','room.paw':'Jejak Kaki',
   'hero.role':'Transformasi HR · Otomasi AI · Jembatan Manusia-AI',
   'hero.desc':'20+ tahun mentransformasi organisasi melalui strategi HR yang terstruktur. Saya membangun sistem, kerangka kerja, dan proses leverage tinggi yang menghasilkan hasil terukur — dan membawa ketelitian yang sama ke dalam karya kreatif.',
+  'strap.what':'Transformasi HR & Otomasi AI','strap.where':'20+ tahun di Indonesia, Australia, Singapura & Hong Kong','strap.cta':'Kerja sama →',
   'hero.cta1':'Kerja Sama','hero.cta2':'Sistem AI Saya →','hero.enter':'Masuki studio','hero.swipe':'Geser untuk menjelajahi studio',
   'stat.exp.label':'Pengalaman','stat.exp.sub':'Tahun Transformasi HR',
-  'stat.profile.label':'Profil','stat.profile.sub':'Komandan · Aries',
+  'stat.profile.label':'Negara','stat.profile.sub':'ID · AU · SG · HK',
   'stat.focus.label':'Fokus','stat.focus.val':'Remote','stat.focus.sub':'Konsultasi Global',
-  'stat.agents.label':'Agen AI','stat.agents.sub':'Aktif · Dipimpin Athena',
+  'stat.agents.label':'Agen AI','stat.agents.sub':'Dibangun · Tahap uji coba',
   'about.tag':'Profil','about.h2':'Strategi. Struktur.<br>Hasil Terukur.',
   'about.p1':'Saya telah menghabiskan lebih dari dua dekade dalam transformasi HR — bukan sebagai generalis, melainkan sebagai <strong>arsitek strategis</strong>. Pekerjaan saya berada di persimpangan desain organisasi, sistem talenta, dan pengembangan kepemimpinan, dengan fokus konsisten pada membangun struktur yang dapat berkembang.',
-  'about.p2':'Sebagai <strong>Komandan ENTJ-A</strong>, saya lebih memilih kerangka daripada perasaan, dan saya membangun sistem yang tidak bergantung pada pengawasan konstan. Filosofi yang sama kini mendorong cara saya beroperasi: dengan infrastruktur AI pribadi yang menangani eksekusi sementara saya fokus pada strategi dan hasil klien.',
+  'about.p2':'Gaya kerja saya adalah <strong>struktur yang melayani manusia</strong>: kerangka kerja yang jelas, proses yang adil, dan sistem yang tetap berjalan tanpa pengawasan terus-menerus, sehingga pemimpin dan tim bisa fokus pada pekerjaan yang penting. Kini saya menerapkan cara berpikir yang sama pada AI, dengan membangun sistem AI pribadi yang menangani pekerjaan rutin sementara saya fokus pada strategi dan hasil klien.',
   'about.p3':'Berbasis di <strong>Jakarta, Indonesia</strong>, saya bekerja dengan organisasi dan individu secara global, membawa pemikiran HR kelas enterprise ke tim yang membutuhkan kejelasan, struktur, dan peta jalan yang benar-benar berhasil.',
   'about.p4':'Strategi adalah keahlian utama saya. Di samping konsultasi, saya menjalankan <strong>praktik kreatif</strong> — film pendek AI, konten visual, dan produk digital — yang dibangun dengan struktur dan ketelitian yang sama.',
   'profile.base':'Lokasi','profile.domain':'Domain','profile.exp':'Pengalaman','profile.approach':'Pendekatan','profile.tools':'Alat','profile.stack':'Sistem AI',
@@ -1082,14 +1100,15 @@ zh:{
   'room.library':'书房','room.desk':'书桌','room.stair':'楼梯','room.stone':'庭院石','room.bridge':'小桥','room.pond':'荷花池','room.paw':'爪印',
   'hero.role':'HR转型 · AI自动化 · 人机桥梁',
   'hero.desc':'20余年通过结构化HR战略转型组织。我构建能产生可量化成果的系统、框架和高效流程——并以同样的用心投入创意工作。',
+  'strap.what':'HR转型与AI自动化','strap.where':'20余年经验，覆盖印度尼西亚、澳大利亚、新加坡与香港','strap.cta':'与我合作 →',
   'hero.cta1':'与我合作','hero.cta2':'我的AI系统 →','hero.enter':'走进工作室','hero.swipe':'滑动探索工作室',
   'stat.exp.label':'经验','stat.exp.sub':'年HR转型经验',
-  'stat.profile.label':'个人档案','stat.profile.sub':'指挥官 · 白羊座',
+  'stat.profile.label':'国家/地区','stat.profile.sub':'ID · AU · SG · HK',
   'stat.focus.label':'专注领域','stat.focus.val':'远程','stat.focus.sub':'全球咨询',
-  'stat.agents.label':'AI智能体','stat.agents.sub':'运行中 · Athena主导',
+  'stat.agents.label':'AI智能体','stat.agents.sub':'已搭建 · 试运行中',
   'about.tag':'个人档案','about.h2':'战略。结构。<br>可量化成果。',
   'about.p1':'我在HR转型领域深耕二十余年——不是作为通才，而是作为<strong>战略架构师</strong>。我的工作处于组织设计、人才系统和领导力发展的交汇处，始终专注于构建可扩展的结构。',
-  'about.p2':'作为<strong>ENTJ-A指挥官</strong>，我以框架而非感觉为先，构建不依赖持续监督即可运行的系统。这一理念如今也决定了我的工作方式：以个人AI基础设施处理执行工作，同时专注于战略和客户成果。',
+  'about.p2':'我的风格是<strong>以结构服务于人</strong>：清晰的框架、公平的流程，以及无需持续监督即可运行的系统，让管理者和团队专注于真正重要的工作。如今我把同样的思路用于AI，搭建个人AI系统处理日常执行工作，而我专注于战略和客户成果。',
   'about.p3':'我常驻<strong>印度尼西亚雅加达</strong>，与全球组织和个人合作，将企业级HR思维带给需要清晰性、结构和真正有效路线图的团队。',
   'about.p4':'战略是我的主业。在咨询之外，我也经营着一份<strong>创意实践</strong>——AI短片、视觉内容与数字产品，以同样的结构与细致打造。',
   'profile.base':'所在地','profile.domain':'领域','profile.exp':'经验','profile.approach':'方法','profile.tools':'工具','profile.stack':'AI系统',
@@ -1141,6 +1160,7 @@ zh:{
 /* Approved client reviews. Add one object per review once the client has agreed it can be published:
    {name:'…', subject:'…', date:'2026-10-01', text:'…'} */
 const APPROVED_REVIEWS = [];
+if (APPROVED_REVIEWS.length) document.body.classList.remove('no-reviews');
 
 const AGENT_NAMES = ['HERMES','APOLLO','NEXUS','IRIS','FORTUNA','KRONOS'];
 const SESSION_MIN = [30,60,90,180];
@@ -1257,7 +1277,7 @@ function navMode(){
   if (st.bottom > y) mode = 'scene'; else if (ag.top < y && ag.bottom > y) mode = 'evening';
   nav.dataset.mode = mode;
   let cur = null;
-  ['about','services','agents','book','reviews','contact'].forEach(id => { const r = document.getElementById(id).getBoundingClientRect(); if (r.top < innerHeight*.4) cur = id; });
+  ['about','services','agents','book','reviews','contact'].forEach(id => { const el = document.getElementById(id); if (!el.offsetParent) return; const r = el.getBoundingClientRect(); if (r.top < innerHeight*.4) cur = id; });
   $$('#navlinks a[href^="#"]').forEach(a => a.setAttribute('aria-current', String(a.getAttribute('href') === '#' + cur)));
 }
 addEventListener('scroll', navMode, {passive:true}); navMode();
