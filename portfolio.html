@@ -354,6 +354,22 @@ dialog::backdrop{background:rgba(30,28,26,.7)}
 @media (prefers-reduced-motion:reduce){.music[aria-pressed="true"] rect{animation:none;transform:none}}
 .langs button{white-space:nowrap}
 @media (max-width:420px){ .music{width:30px;height:30px;margin-right:4px} .langs button{padding:6px 6px} }
+
+/* music: clear note icon when off, equaliser when playing, first-visit hint */
+.music .note{width:17px;height:17px;fill:currentColor}
+.music .bars{display:none}
+.music[aria-pressed="true"] .note{display:none}
+.music[aria-pressed="true"] .bars{display:block}
+.music.nudge:not([aria-pressed="true"]){animation:musicPulse 2.2s ease-in-out 4}
+@keyframes musicPulse{50%{box-shadow:0 0 0 7px rgba(180,154,112,.38);opacity:1}}
+.music-hint{position:fixed;z-index:80;background:var(--brass);color:var(--charcoal);font:600 13px/18px var(--font-sans);padding:7px 12px;border:0;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.35);opacity:0;transform:translateY(-4px);transition:opacity .4s,transform .4s;white-space:nowrap}
+.music-hint.show{opacity:1;transform:none}
+.music-hint::before{content:"";position:absolute;top:-6px;left:var(--arrow,50%);margin-left:-6px;border:6px solid transparent;border-top:0;border-bottom-color:var(--brass)}
+@media (prefers-reduced-motion:reduce){.music.nudge{animation:none}.music-hint{transition:none}}
+/* Chinese reads top-to-bottom, characters upright */
+:lang(zh-Hans) .drawer-tab .tab-name{writing-mode:horizontal-tb;transform:none;width:1em;word-break:break-all;line-height:1.2;letter-spacing:0;text-align:center}
+/* mobile: project names crowd and overlap inside the studio; show rings only (names are in "All projects") */
+@media (max-width:760px){ .studio.pf .hot-in .tag{display:none} .studio.pf .hot-in{padding:11px} }
 @media (max-width:420px){ .brand{font-size:18px} .menu-btn{padding:0 10px} .nav-inner{padding:0 12px;gap:6px} }
 
 /* swipe hint (phones) */
@@ -546,7 +562,7 @@ body.portfolio{overflow:hidden}
       <li><a href="index.html#contact" data-i18n="nav.connect">Connect</a></li>
     </ul>
     <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navlinks" data-i18n="nav.menu">Menu</button>
-    <button class="music" id="musicBtn" type="button" aria-pressed="false"><svg viewBox="0 0 20 16" aria-hidden="true"><rect x="1" y="6" width="2.4" height="6" rx="1.2"/><rect x="6" y="3" width="2.4" height="10" rx="1.2"/><rect x="11" y="5" width="2.4" height="7" rx="1.2"/><rect x="16" y="2" width="2.4" height="11" rx="1.2"/></svg></button>
+    <button class="music" id="musicBtn" type="button" aria-pressed="false"><svg class="note" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/></svg><svg class="bars" viewBox="0 0 20 16" aria-hidden="true"><rect x="1" y="6" width="2.4" height="6" rx="1.2"/><rect x="6" y="3" width="2.4" height="10" rx="1.2"/><rect x="11" y="5" width="2.4" height="7" rx="1.2"/><rect x="16" y="2" width="2.4" height="11" rx="1.2"/></svg></button>
     <div class="langs" role="group" aria-label="Language">
       <button data-lang="en" aria-pressed="true" title="English">EN</button>
       <button data-lang="id" aria-pressed="false" title="Bahasa Indonesia">ID</button>
@@ -1008,6 +1024,19 @@ window.EYSMusic = function(btn, preset, key){
   document.addEventListener('visibilitychange', () => document.hidden ? amb.pause() : amb.resume());
   document.addEventListener('click', e => { if (e.target.closest && e.target.closest('[data-lang]')) setTimeout(paint, 0); });
   paint();
+  // first visits: point out the music button until the visitor has used it once
+  if (store.get() === null){
+    const HINT = { en: '♪ Tap for music', id: '♪ Ketuk untuk musik', zh: '♪ 点击播放音乐' };
+    const tip = document.createElement('button'); tip.type = 'button'; tip.className = 'music-hint';
+    const place = () => { const r = btn.getBoundingClientRect(); tip.textContent = HINT[lang()];
+      const w = tip.offsetWidth, x = Math.max(8, Math.min(innerWidth - w - 8, r.left + r.width/2 - w/2));
+      tip.style.left = x + 'px'; tip.style.top = (r.bottom + 10) + 'px'; tip.style.setProperty('--arrow', (r.left + r.width/2 - x) + 'px'); };
+    const hide = () => { tip.classList.remove('show'); btn.classList.remove('nudge'); setTimeout(() => tip.remove(), 450); };
+    tip.addEventListener('click', e => { e.stopPropagation(); hide(); btn.click(); });
+    btn.addEventListener('click', hide, { once: true });
+    setTimeout(() => { if (amb.on || !btn.offsetParent) return; document.body.appendChild(tip); place(); btn.classList.add('nudge');
+      requestAnimationFrame(() => tip.classList.add('show')); addEventListener('resize', place); setTimeout(hide, 8000); }, 1500);
+  }
 };
 })();
 
