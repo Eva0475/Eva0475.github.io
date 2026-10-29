@@ -75,7 +75,7 @@ footer{margin-top:22px;font-size:12px;color:var(--greige);line-height:1.6}
 <div class="wrap">
 <header>
   <div>
-    <div class="eyebrow">Organization design · Interactive demo</div>
+    <div class="eyebrow">Organization design · Interactive demo by Eva Yuliana</div>
     <h1>Org Design Studio</h1>
     <p class="lede">How I review a structure: count the layers, check every manager's span of control, find where decisions slow down, then test a redesign before anyone moves.</p>
   </div>
@@ -87,7 +87,7 @@ footer{margin-top:22px;font-size:12px;color:var(--greige);line-height:1.6}
     <button type="button" data-v="current" aria-pressed="true">Current structure</button>
     <button type="button" data-v="proposed" aria-pressed="false">Proposed redesign</button>
   </div>
-  <span class="note">Arunika Retail is a fictional company. All names and numbers are illustrative.</span>
+  <span class="note">Eva Holdings is a fictional company. All names and numbers are illustrative.</span>
 </div>
 
 <section class="kpis" id="kpis" aria-live="polite"></section>
@@ -120,35 +120,38 @@ footer{margin-top:22px;font-size:12px;color:var(--greige);line-height:1.6}
 <script>
 // m(title, function, children, staffCount)
 const m=(t,f,c=[],s=0)=>({t,f,c,s});
-const store=(r,i)=>m(`Store Manager ${r}${i}`,'Operations',[],8);
 const ORG={
  current: m('Chief Executive Officer','Leadership',[
-  m('Chief Operating Officer','Operations',['West','East','Central'].map(r=>
-    m(`Regional Manager · ${r}`,'Operations',[1,2].map(a=>
-      m(`Area Manager · ${r} ${a}`,'Operations',[1,2].map(i=>store(r[0],(a-1)*2+i)))))),1),
-  m('Head of Commercial','Commercial',[],13),
-  m('Head of Finance','Finance',[m('Finance Manager','Finance',[m('Accounting Supervisor','Finance',[],3)],1)],1),
-  m('Head of People','People',[],4),
-  m('Head of Technology','Technology',[],6)
+  m('Chief Operating Officer','Operations',[m('VP Operations','Operations',['North','South','East'].map(r=>
+    m(`Operations Manager · ${r}`,'Operations',['A','B'].map(x=>m(`Team Lead · ${r} ${x}`,'Operations',[],8)),1)))],1),
+  m('Chief Financial Officer','Finance',[m('Finance Director','Finance',[m('Finance Manager','Finance',[m('Accounting Supervisor','Finance',[],4)],2)],2)],1),
+  m('Chief Technology Officer','Technology',[m('VP Engineering','Technology',['Platform','Product'].map(x=>
+    m(`Engineering Manager · ${x}`,'Technology',[1,2,3].map(i=>m(`Squad Lead · ${x} ${i}`,'Technology',[],5)))),1)],1),
+  m('Chief Human Resources Officer','People',[],6),
+  m('Chief Commercial Officer','Commercial',[],15),
+  m('General Counsel','Legal',[],2)
  ],1),
  proposed: m('Chief Executive Officer','Leadership',[
-  m('Chief Operating Officer','Operations',['West','East','Central'].map(r=>
-    m(`Regional Manager · ${r}`,'Operations',[1,2,3,4].map(i=>store(r[0],i)),1)),1),
-  m('Head of Commercial','Commercial',[m('Sales Lead','Commercial',[],5),m('Marketing Lead','Commercial',[],4)],2),
-  m('Head of Finance','Finance',[],6),
-  m('Head of People','People',[],4),
-  m('Head of Technology','Technology',[],6)
+  m('Chief Operating Officer','Operations',['North','South & East'].map(r=>
+    m(`Operations Manager · ${r}`,'Operations',[1,2,3].map(x=>m(`Team Lead · ${r} ${x}`,'Operations',[],8)),1)),2),
+  m('Chief Financial Officer','Finance',[m('Finance Manager','Finance',[],6)],4),
+  m('Chief Technology Officer','Technology',['Platform','Product'].map(x=>
+    m(`Engineering Manager · ${x}`,'Technology',[1,2,3].map(i=>m(`Squad Lead · ${x} ${i}`,'Technology',[],5)),1)),2),
+  m('Chief Human Resources Officer','People',[],6),
+  m('Chief Commercial Officer','Commercial',[m('Sales Lead','Commercial',[],7),m('Account Management Lead','Commercial',[],4)],2),
+  m('General Counsel','Legal',[],2)
  ],1)
 };
 const NOTES={
  current:{title:'What the review found',sub:'Issues in the current structure, ranked by impact.'},
- proposed:{title:'What the redesign changes',sub:'Each change answers one finding. Headcount moves by role, not by person.'}
+ proposed:{title:'What the redesign changes',sub:'Each change answers one finding. Roles move, people are placed through a fair selection process.'}
 };
 const CHANGES=[
- 'Removed the Area Manager layer in Operations. Regional Managers now lead 4 stores each, so store issues reach a decision-maker in one step instead of two.',
- 'Three of the six Area Manager roles become Regional Operations Analysts, one per region, keeping store support close without a management layer.',
- 'Split Commercial into Sales and Marketing teams with a lead each, so the Head of Commercial coaches 2 leads and 2 analysts instead of 13 people directly.',
- 'Collapsed the Finance chain (Head → Manager → Supervisor) into one team under the Head of Finance.'
+ 'Removed the VP Operations layer and merged three regions into two. Each Operations Manager now leads three team leads and reports to the COO, so escalations reach an executive in one step.',
+ 'Removed the VP Engineering layer. Engineering Managers report to the CTO, who gains two architects to keep technical standards.',
+ 'Collapsed the Finance chain (CFO → Director → Manager → Supervisor) into one Finance Manager team, with reporting and tax specialists under the CFO.',
+ 'Split Commercial into Sales and Account Management, each with a lead, so the CCO coaches 4 people instead of 15.',
+ 'Legal stays small by design: a narrow span is accepted for a specialist function and is noted, not forced.'
 ];
 const NARROW=3, WIDE=11;
 function walk(n,depth,out,path){
@@ -170,12 +173,12 @@ function stats(v){
 }
 const S={current:stats('current'),proposed:stats('proposed')};
 function findingsFor(){
-  const c=S.current, ops=c.mgr.filter(x=>x.t.startsWith('Area Manager'));
+  const c=S.current, sp=t=>c.mgr.find(x=>x.t===t).span;
   return [
-   `${c.layers} layers from CEO to store staff. Store issues pass through Store, Area and Regional managers before reaching the COO.`,
-   `${ops.length} Area Managers each lead only ${ops[0].span} people — a full management layer with very narrow spans.`,
-   `The Head of Commercial manages ${c.mgr.find(x=>x.t==='Head of Commercial').span} people directly, well above the healthy range, with no team leads.`,
-   `Finance runs as a chain: each manager has just 1–3 reports across three levels for an 8-person function.`
+   `${c.layers} layers from the CEO to front-line staff in Operations and Technology. Decisions pass through three managers before reaching an executive.`,
+   `Two VP layers (Operations, Engineering) each manage only ${sp('VP Operations')}–${sp('VP Engineering')} people: a full management level with very narrow spans.`,
+   `Finance runs as a chain of four managers, each with 2–4 reports, for a ${c.fx.Finance}-person function.`,
+   `The Chief Commercial Officer manages ${sp('Chief Commercial Officer')} people directly, well above the healthy range, with no team leads.`
   ];
 }
 const $=s=>document.querySelector(s);
