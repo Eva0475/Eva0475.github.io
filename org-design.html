@@ -126,9 +126,9 @@ const ORG={
   m('Digital Marketing Lead','Commercial',[],2),
   m('Head of HRBP','People',[m('General Support Lead','People',[],4)],4),
   m('Head of FA','Finance',[],1),
-  m('Product & Business Lead','Product',[
-    m('Head of Product & Business','Product',[],3),
-    m('Head of UI/UX & Design','Product',[],3)],1),
+  m('Head of Product & Business','Product',[
+    m('Product & Business Lead','Product',[],3),
+    m('UI/UX & Design Lead','Product',[],3)],1),
   m('VP Engineering','Technology',[
     m('System & DevOps Lead','Technology',[],1),
     m('QA/QC Lead','Technology',[],2),
@@ -142,7 +142,8 @@ const ORG={
     m('Head of Sales','Commercial',[],5),
     m('Marketing & Brand Lead','Commercial',[],3)],1),
   m('Head of Product & Business','Product',[
-    m('Head of UI/UX & Design','Product',[],3)],4),
+    m('Product & Business Lead','Product',[],3),
+    m('UI/UX & Design Lead','Product',[],3)],1),
   m('Chief Technology Officer','Technology',[
     m('Software Engineer Lead','Technology',[],11),
     m('QA/QC & DevOps Lead','Technology',[],4),
@@ -159,7 +160,7 @@ const NOTES={
 const CHANGES=[
  'One technology leader instead of two: the Chief Technology Officer leads engineering, data and PMO, and the VP Engineering role merges into it, so priorities are set in one place.',
  'A Chief Commercial Officer brings Sales and Marketing & Brand together, so what is sold and what is promoted follow one plan.',
- 'Titles match levels: the Product & Business Lead and the Head of Product & Business become one division head reporting to the CEO, and the Developer Senior Lead layer merges into the engineering team.',
+ 'Removed the single-report layer: the Developer Senior Lead role merges into the engineering team, so engineers sit one step closer to the CTO.',
  'Engineering support combined: System & DevOps and QA/QC form one team, and spatial developers join the Software Engineer Lead team.',
  'Corporate functions grouped: the Head of FA also covers Legal and Investor Relations, and the CEO keeps one Executive Assistant and leads 5 executives instead of 11 people.',
  'The Software Engineer Lead span (11) sits at the edge of the range on purpose: a team of peers on one codebase, reviewed again after six months.'
@@ -188,7 +189,7 @@ function findingsFor(){
   return [
    `The CEO has ${sp('Chief Executive Officer')} direct reports, mixing division heads with support roles. Too many conversations, too little time for strategy.`,
    `Technology has two leaders (VP Engineering and Chief Technology Officer) with overlapping scope, so engineering priorities compete instead of aligning.`,
-   `Titles do not match levels: a Head of Product & Business reports to a Product & Business Lead, and a Developer Senior Lead manages only one person.`,
+   `A single-report layer slows engineering: the Developer Senior Lead manages only one person, between the VP Engineering and the engineers.`,
    `${c.narrow} managers lead two people or fewer, a sign of titles created for growth that has not arrived yet.`
   ];
 }
