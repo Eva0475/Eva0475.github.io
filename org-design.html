@@ -84,10 +84,10 @@ footer{margin-top:22px;font-size:12px;color:var(--greige);line-height:1.6}
 
 <div class="bar-top">
   <div class="seg" role="group" aria-label="Structure">
-    <button type="button" data-v="current" aria-pressed="true">Current structure</button>
-    <button type="button" data-v="proposed" aria-pressed="false">Proposed redesign</button>
+    <button type="button" data-v="current" aria-pressed="true">Before</button>
+    <button type="button" data-v="proposed" aria-pressed="false">After (proposed)</button>
   </div>
-  <span class="note">Eva Tech is a fictional company based on a structure I designed. Roles are real; names and numbers are changed.</span>
+  <span class="note">Eva Tech is a fictional company based on a restructuring I led. Roles are real; names and numbers are changed.</span>
 </div>
 
 <section class="kpis" id="kpis" aria-live="polite"></section>
@@ -126,16 +126,16 @@ const ORG={
   m('Digital Marketing Lead','Commercial',[],2),
   m('Head of HRBP','People',[m('General Support Lead','People',[],4)],4),
   m('Head of FA','Finance',[],1),
-  m('Head of Product & Business','Product',[m('Product & Business Lead','Product',[],3)],1),
-  m('Head of UI/UX & Design','Design',[],3),
-  m('Chief Technology Officer','Technology',[
-    m('VP Engineering','Technology',[
-      m('System & DevOps Lead','Technology',[],1),
-      m('QA/QC Lead','Technology',[],2),
-      m('Spatial Developer Lead','Technology',[],2),
-      m('Developer Lead','Technology',[m('Software Engineer Lead','Technology',[],9)],1),
-      m('Head of Big Data','Data',[m('Data Engineering & Analytics Lead','Data',[],6)],2)]),
-    m('Head of PMO','Technology',[],3)],4)
+  m('Head of Product & Business','Product',[
+    m('Product & Business Lead','Product',[],3),
+    m('Head of UI/UX & Design','Design',[],3)]),
+  m('VP Engineering','Technology',[
+    m('System & DevOps Lead','Technology',[],1),
+    m('QA/QC Lead','Technology',[],2),
+    m('Spatial Developer Lead','Technology',[],2),
+    m('Developer Lead','Technology',[m('Software Engineer Lead','Technology',[],9)],1),
+    m('Head of Big Data','Data',[m('Data Engineering & Analytics Lead','Data',[],6)],2)]),
+  m('Chief Technology Officer','Technology',[m('Head of PMO','Technology',[],3)],4)
  ],4),
  proposed: m('Chief Executive Officer','Leadership',[
   m('Head of Sales','Commercial',[m('Marketing & Brand Lead','Commercial',[],3)],5),
@@ -152,15 +152,14 @@ const ORG={
  ],1)
 };
 const NOTES={
- current:{title:'What the review found',sub:'Issues in the current structure, ranked by impact.'},
- proposed:{title:'What the redesign changes',sub:'Each change answers one finding. Roles move first; people are placed through a fair selection process.'}
+ current:{title:'What the review found',sub:'Issues in the structure before the restructure, ranked by impact.'},
+ proposed:{title:'What the restructure changed',sub:'Each change answers one finding. Roles move first; people are placed through a fair selection process.'}
 };
 const CHANGES=[
- 'A focused CEO span: the five support and product heads (Sales, HRBP, FA, Product & Business, UI/UX & Design) and the CTO report to the CEO, who keeps one Executive Assistant and leads 7 people instead of 11.',
- 'Corporate roles placed in their divisions: Investor Relations and Legal move under the Head of FA, and corporate branding joins the new Marketing & Brand Lead under the Head of Sales.',
- 'One layer less in engineering: the Developer Lead role merges into the engineering team, and Big Data reports straight to the CTO, so engineers sit one step closer to decisions.',
- 'Engineering support combined: System & DevOps and QA/QC form one team, and spatial developers join the Software Engineer Lead team.',
- 'Product & Business runs as one team under its Head, without a separate lead layer for three people.',
+ 'Clear reporting lines: support and product divisions (Sales, HRBP, FA, Product & Business and UI/UX & Design) report directly to the CEO, while engineering, Big Data and PMO all sit under the Chief Technology Officer.',
+ 'UI/UX & Design becomes its own division reporting to the CEO, instead of a Head sitting under another Head.',
+ 'A focused CEO span: corporate roles move into their divisions (Investor Relations and Legal under the Head of FA, corporate branding into a Marketing & Brand Lead under the Head of Sales), so the CEO leads 7 people instead of 11.',
+ 'Single-report layers removed: the Developer Lead role merges into the engineering team, and System & DevOps joins QA/QC in one team.',
  'The Software Engineer Lead span (11) sits at the edge of the range on purpose: a team of peers on one codebase, reviewed again after six months.'
 ];
 const NARROW=2, WIDE=11;
@@ -185,9 +184,9 @@ const S={current:stats('current'),proposed:stats('proposed')};
 function findingsFor(){
   const c=S.current, sp=t=>c.mgr.find(x=>x.t===t).span;
   return [
-   `The CEO has ${sp('Chief Executive Officer')} direct reports, mixing division heads with individual support roles. Too many conversations, too little time for strategy.`,
-   `Engineering runs ${c.layers} layers deep: CEO, CTO, VP Engineering, Developer Lead, Software Engineer Lead, then the engineers.`,
-   `Single-report layers: the Developer Lead manages one person, and the Head of Product & Business manages one lead.`,
+   `Two technology leaders both report to the CEO: the VP Engineering runs the engineers while the Chief Technology Officer runs PMO, so delivery priorities compete instead of aligning.`,
+   `Design sits inside Product & Business: a Head of UI/UX & Design reports to another Head, a level too low for a function the whole company relies on.`,
+   `The CEO has ${sp('Chief Executive Officer')} direct reports, mixing division heads with individual support roles, and the Developer Lead manages only one person.`,
    `${c.narrow} managers lead two people or fewer, a sign of titles created for growth that has not arrived yet.`
   ];
 }
@@ -198,7 +197,7 @@ function delta(k,lowerIsBetter,fmt=x=>x){
   if(view==='current') return '<span class="d">&nbsp;</span>';
   const a=S.current[k],b=S.proposed[k],d=b-a; if(Math.abs(d)<1e-9) return '<span class="d">no change</span>';
   const good=lowerIsBetter?d<0:d>0;
-  return `<span class="d ${good?'up':'bad'}">${d>0?'+':'−'}${fmt(Math.abs(d))} vs current</span>`;
+  return `<span class="d ${good?'up':'bad'}">${d>0?'+':'−'}${fmt(Math.abs(d))} vs before</span>`;
 }
 function render(){
   const s=S[view];
