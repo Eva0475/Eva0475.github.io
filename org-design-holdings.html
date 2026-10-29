@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#343633">
+<title>Org Design Studio — Eva Yuliana</title>
+<meta name="description" content="Interactive org design demo: spans of control, layers and a current vs proposed structure for a fictional company.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{--charcoal:#343633;--ivory:#F2EBDD;--walnut:#49372D;--brass:#B49A70;--metal:#7A6340;--jade:#526B59;--greige:#C9C2B5;--muted:#5E5D57;--hair:#5A5A55;--line:#DCD2BF;--warn:#9A4A3A;--warnbg:#F5E3DC;--goodbg:#E3EBE4}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--charcoal);color:var(--ivory);font-family:Inter,system-ui,sans-serif;-webkit-text-size-adjust:100%}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:20px 16px 48px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:18px}
+.eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--brass)}
+h1{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:clamp(30px,5vw,44px);margin:4px 0 2px;line-height:1.05}
+.lede{color:var(--greige);font-size:14px;margin:4px 0 0;max-width:560px;line-height:1.5}
+.back{font-size:12px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;border:1px solid var(--brass);padding:9px 14px;color:var(--ivory)}
+.seg{display:inline-flex;border:1px solid var(--brass);border-radius:999px;padding:3px;background:#2C2E2B}
+.seg button{font:inherit;font-size:13px;font-weight:600;border:0;border-radius:999px;padding:8px 16px;background:none;color:var(--greige);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--brass);color:var(--charcoal)}
+.seg button:focus-visible,.node summary:focus-visible{outline:2px solid #A9BBAE;outline-offset:2px}
+.bar-top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin:6px 0 14px}
+.note{font-size:12px;color:var(--greige)}
+.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:16px}
+.kpi{background:var(--ivory);color:var(--walnut);border-radius:6px;padding:12px 12px 10px}
+.kpi .k{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.kpi .v{font-family:"Cormorant Garamond",serif;font-size:32px;font-weight:600;line-height:1.1}
+.kpi .d{font-size:12px;min-height:16px}
+.d.up{color:var(--jade)}.d.dn{color:var(--jade)}.d.bad{color:var(--warn)}
+.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
+.panel{background:var(--ivory);color:var(--walnut);border-radius:6px;padding:16px}
+.panel h2{font-family:"Cormorant Garamond",serif;font-size:24px;margin:0 0 2px;font-weight:600}
+.panel .sub{font-size:12.5px;color:var(--muted);margin:0 0 12px;line-height:1.45}
+.spans{display:flex;flex-direction:column;gap:6px}
+.srow{display:grid;grid-template-columns:minmax(0,150px) 1fr 34px;gap:8px;align-items:center;font-size:12.5px}
+.srow .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.track{height:12px;background:#E6DDCC;border-radius:6px;position:relative;overflow:hidden}
+.fill{position:absolute;inset:0 auto 0 0;background:var(--jade);border-radius:6px;transition:width .4s}
+.fill.narrow,.fill.wide{background:var(--warn)}
+.srow .n{text-align:right;font-weight:600}
+.band{position:absolute;top:0;bottom:0;background:rgba(82,107,89,.14);border-left:1px dashed var(--jade);border-right:1px dashed var(--jade)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:11.5px;color:var(--muted);margin-top:10px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.fx{display:flex;flex-direction:column;gap:8px}
+.fxr{display:grid;grid-template-columns:96px 1fr 40px;gap:8px;align-items:center;font-size:12.5px}
+.fxr .track{height:14px}.fxr .fill{background:var(--brass)}
+.findings{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.findings li{font-size:13px;line-height:1.45;padding:9px 11px;border-radius:5px;background:var(--warnbg);border-left:3px solid var(--warn)}
+.findings.good li{background:var(--goodbg);border-left-color:var(--jade)}
+.tree{margin-top:4px}
+.node{margin:4px 0 4px 0}
+.node .kids{margin-left:14px;padding-left:12px;border-left:1px solid var(--line)}
+.node summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid var(--line);border-radius:5px;background:#FBF7EF;font-size:13px}
+.node summary::-webkit-details-marker{display:none}
+.node summary .t{font-weight:600;flex:1;min-width:0}
+.node summary .chev{width:12px;color:var(--metal);transition:transform .2s;flex:none}
+.node[open]>summary .chev{transform:rotate(90deg)}
+.node.leaf summary{cursor:default}
+.pill{font-size:11px;padding:2px 8px;border-radius:999px;background:#E6DDCC;white-space:nowrap}
+.pill.flag{background:var(--warn);color:#fff}
+.staff{font-size:12px;color:var(--muted);margin:3px 0 3px 2px}
+.full{grid-column:1/-1}
+footer{margin-top:22px;font-size:12px;color:var(--greige);line-height:1.6}
+@media (max-width:860px){.kpis{grid-template-columns:repeat(3,1fr)}.grid{grid-template-columns:1fr}}
+@media (max-width:420px){.kpi .v{font-size:26px}.srow{grid-template-columns:minmax(0,118px) 1fr 28px}}
+@media (prefers-reduced-motion:reduce){.fill,.node summary .chev{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div>
+    <div class="eyebrow">Organization design · Interactive demo by Eva Yuliana</div>
+    <h1>Org Design Studio</h1>
+    <p class="lede">How I review a structure: count the layers, check every manager's span of control, find where decisions slow down, then test a redesign before anyone moves.</p>
+  </div>
+  <a class="back" href="portfolio.html">← Portfolio</a>
+</header>
+
+<div class="bar-top">
+  <div class="seg" role="group" aria-label="Structure">
+    <button type="button" data-v="current" aria-pressed="true">Current structure</button>
+    <button type="button" data-v="proposed" aria-pressed="false">Proposed redesign</button>
+  </div>
+  <span class="note">Eva Holdings is a fictional company. All names and numbers are illustrative.</span>
+</div>
+
+<section class="kpis" id="kpis" aria-live="polite"></section>
+
+<div class="grid">
+  <section class="panel">
+    <h2>Spans of control</h2>
+    <p class="sub">Direct reports per manager. The shaded band (4–10) is the healthy range used in this demo; red bars sit outside it.</p>
+    <div class="spans" id="spans"></div>
+    <div class="legend"><span><i style="background:var(--jade)"></i>In range</span><span><i style="background:var(--warn)"></i>Too narrow (≤3) or too wide (≥11)</span><span><i style="background:rgba(82,107,89,.25)"></i>Healthy band</span></div>
+  </section>
+  <section class="panel">
+    <h2 id="fTitle">What the review found</h2>
+    <p class="sub" id="fSub"></p>
+    <ul class="findings" id="findings"></ul>
+    <h2 style="margin-top:18px">Headcount by function</h2>
+    <p class="sub">Where people sit, including managers.</p>
+    <div class="fx" id="fx"></div>
+  </section>
+  <section class="panel full">
+    <h2>Structure</h2>
+    <p class="sub">Tap a role to open its team. Pills show each manager's span; red means outside the healthy band.</p>
+    <div class="tree" id="tree"></div>
+  </section>
+</div>
+
+<footer>Built by Eva Yuliana as a portfolio demo. In a real engagement the data comes from the HRIS export, and the redesign is tested with leaders, role profiles and a transition plan before anything is announced.</footer>
+</div>
+
+<script>
+// m(title, function, children, staffCount)
+const m=(t,f,c=[],s=0)=>({t,f,c,s});
+const ORG={
+ current: m('Chief Executive Officer','Leadership',[
+  m('Chief Operating Officer','Operations',[m('VP Operations','Operations',['North','South','East'].map(r=>
+    m(`Operations Manager · ${r}`,'Operations',['A','B'].map(x=>m(`Team Lead · ${r} ${x}`,'Operations',[],8)),1)))],1),
+  m('Chief Financial Officer','Finance',[m('Finance Director','Finance',[m('Finance Manager','Finance',[m('Accounting Supervisor','Finance',[],4)],2)],2)],1),
+  m('Chief Technology Officer','Technology',[m('VP Engineering','Technology',['Platform','Product'].map(x=>
+    m(`Engineering Manager · ${x}`,'Technology',[1,2,3].map(i=>m(`Squad Lead · ${x} ${i}`,'Technology',[],5)))),1)],1),
+  m('Chief Human Resources Officer','People',[],6),
+  m('Chief Commercial Officer','Commercial',[],15),
+  m('General Counsel','Legal',[],2)
+ ],1),
+ proposed: m('Chief Executive Officer','Leadership',[
+  m('Chief Operating Officer','Operations',['North','South & East'].map(r=>
+    m(`Operations Manager · ${r}`,'Operations',[1,2,3].map(x=>m(`Team Lead · ${r} ${x}`,'Operations',[],8)),1)),2),
+  m('Chief Financial Officer','Finance',[m('Finance Manager','Finance',[],6)],4),
+  m('Chief Technology Officer','Technology',['Platform','Product'].map(x=>
+    m(`Engineering Manager · ${x}`,'Technology',[1,2,3].map(i=>m(`Squad Lead · ${x} ${i}`,'Technology',[],5)),1)),2),
+  m('Chief Human Resources Officer','People',[],6),
+  m('Chief Commercial Officer','Commercial',[m('Sales Lead','Commercial',[],7),m('Account Management Lead','Commercial',[],4)],2),
+  m('General Counsel','Legal',[],2)
+ ],1)
+};
+const NOTES={
+ current:{title:'What the review found',sub:'Issues in the current structure, ranked by impact.'},
+ proposed:{title:'What the redesign changes',sub:'Each change answers one finding. Roles move, people are placed through a fair selection process.'}
+};
+const CHANGES=[
+ 'Removed the VP Operations layer and merged three regions into two. Each Operations Manager now leads three team leads and reports to the COO, so escalations reach an executive in one step.',
+ 'Removed the VP Engineering layer. Engineering Managers report to the CTO, who gains two architects to keep technical standards.',
+ 'Collapsed the Finance chain (CFO → Director → Manager → Supervisor) into one Finance Manager team, with reporting and tax specialists under the CFO.',
+ 'Split Commercial into Sales and Account Management, each with a lead, so the CCO coaches 4 people instead of 15.',
+ 'Legal stays small by design: a narrow span is accepted for a specialist function and is noted, not forced.'
+];
+const NARROW=3, WIDE=11;
+function walk(n,depth,out,path){
+  const span=n.c.length+n.s;
+  if(n.c.length||n.s) out.mgr.push({t:n.t,span,f:n.f,depth});
+  out.hc+=1; out.layers=Math.max(out.layers,depth+(n.s?1:0));
+  out.fx[n.f]=(out.fx[n.f]||0)+1+n.s; out.hc+=n.s;
+  n.c.forEach(k=>walk(k,depth+1,out));
+  return out;
+}
+function stats(v){
+  const o=walk(ORG[v],1,{mgr:[],hc:0,layers:0,fx:{}});
+  // count the CEO's function as Leadership; fold Leadership into a small bucket
+  o.mgrN=o.mgr.length;
+  o.avg=o.mgr.reduce((a,b)=>a+b.span,0)/o.mgrN;
+  o.narrow=o.mgr.filter(x=>x.span<=NARROW).length;
+  o.wide=o.mgr.filter(x=>x.span>=WIDE).length;
+  return o;
+}
+const S={current:stats('current'),proposed:stats('proposed')};
+function findingsFor(){
+  const c=S.current, sp=t=>c.mgr.find(x=>x.t===t).span;
+  return [
+   `${c.layers} layers from the CEO to front-line staff in Operations and Technology. Decisions pass through three managers before reaching an executive.`,
+   `Two VP layers (Operations, Engineering) each manage only ${sp('VP Operations')}–${sp('VP Engineering')} people: a full management level with very narrow spans.`,
+   `Finance runs as a chain of four managers, each with 2–4 reports, for a ${c.fx.Finance}-person function.`,
+   `The Chief Commercial Officer manages ${sp('Chief Commercial Officer')} people directly, well above the healthy range, with no team leads.`
+  ];
+}
+const $=s=>document.querySelector(s);
+const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+let view='current';
+function delta(k,lowerIsBetter,fmt=x=>x){
+  if(view==='current') return '<span class="d">&nbsp;</span>';
+  const a=S.current[k],b=S.proposed[k],d=b-a; if(Math.abs(d)<1e-9) return '<span class="d">no change</span>';
+  const good=lowerIsBetter?d<0:d>0;
+  return `<span class="d ${good?'up':'bad'}">${d>0?'+':'−'}${fmt(Math.abs(d))} vs current</span>`;
+}
+function render(){
+  const s=S[view];
+  $('#kpis').innerHTML=[
+   ['Headcount',s.hc,delta('hc',true)],
+   ['Managers',s.mgrN,delta('mgrN',true)],
+   ['Avg span',s.avg.toFixed(1),delta('avg',false,x=>x.toFixed(1))],
+   ['Layers',s.layers,delta('layers',true)],
+   ['Narrow spans',s.narrow,delta('narrow',true)],
+   ['Wide spans',s.wide,delta('wide',true)]
+  ].map(([k,v,d])=>`<div class="kpi"><div class="k">${k}</div><div class="v">${v}</div>${d}</div>`).join('');
+  const max=16, sorted=[...s.mgr].sort((a,b)=>b.span-a.span);
+  $('#spans').innerHTML=sorted.map(x=>{
+    const cls=x.span<=NARROW?'narrow':x.span>=WIDE?'wide':'';
+    return `<div class="srow"><span class="nm" title="${esc(x.t)}">${esc(x.t)}</span><div class="track"><div class="band" style="left:${4/max*100}%;width:${6/max*100}%"></div><div class="fill ${cls}" style="width:${Math.min(x.span,max)/max*100}%"></div></div><span class="n">${x.span}</span></div>`;
+  }).join('');
+  $('#fTitle').textContent=NOTES[view].title; $('#fSub').textContent=NOTES[view].sub;
+  const f=$('#findings'); f.className='findings'+(view==='proposed'?' good':'');
+  f.innerHTML=(view==='current'?findingsFor():CHANGES).map(x=>`<li>${esc(x)}</li>`).join('');
+  const fx=Object.entries(s.fx).sort((a,b)=>b[1]-a[1]), fmax=Math.max(...fx.map(x=>x[1]));
+  $('#fx').innerHTML=fx.map(([k,v])=>`<div class="fxr"><span>${k}</span><div class="track"><div class="fill" style="width:${v/fmax*100}%"></div></div><span class="n" style="text-align:right;font-weight:600">${v}</span></div>`).join('');
+  $('#tree').innerHTML=node(ORG[view],0);
+}
+function node(n,d){
+  const span=n.c.length+n.s, flag=span&&(span<=NARROW||span>=WIDE);
+  const pill=span?`<span class="pill ${flag?'flag':''}">span ${span}</span>`:'';
+  const staff=n.s?`<div class="staff">+ ${n.s} team member${n.s>1?'s':''}</div>`:'';
+  if(!n.c.length) return `<details class="node leaf"><summary><span class="chev">•</span><span class="t">${esc(n.t)}</span>${pill}</summary></details>${n.s?`<div class="kids" style="margin-left:14px;padding-left:12px;border-left:1px solid var(--line)">${staff}</div>`:''}`;
+  return `<details class="node" ${d<2?'open':''}><summary><span class="chev">›</span><span class="t">${esc(n.t)}</span>${pill}</summary><div class="kids">${staff}${n.c.map(k=>node(k,d+1)).join('')}</div></details>`;
+}
+document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>{
+  view=b.dataset.v; document.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed',x===b)); render();
+}));
+render();
+</script>
+</body>
+</html>
