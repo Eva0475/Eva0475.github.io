@@ -122,37 +122,34 @@ footer{margin-top:22px;font-size:12px;color:var(--greige);line-height:1.6}
 const m=(t,f,c=[],s=0)=>({t,f,c,s});
 const ORG={
  current: m('Chief Executive Officer','Leadership',[
-  m('Head of Sales','Commercial',[m('Deputy Head of Sales','Commercial',[],5)]),
+  m('Head of Sales','Commercial',[],5),
   m('Digital Marketing Lead','Commercial',[],2),
-  m('Head of HRBP','People',[m('Senior General Support','People',[],4)],4),
-  m('Finance & Accounting Senior Lead','Finance',[],1),
-  m('Product & Business Senior Lead','Product',[
-    m('Product Management Lead','Product',[],3),
-    m('Business Insight Senior Lead','Product',[],5),
+  m('Head of HRBP','People',[m('General Support Lead','People',[],4)],4),
+  m('Head of FA','Finance',[],1),
+  m('Product & Business Lead','Product',[
+    m('Head of Product & Business','Product',[],3),
     m('Head of UI/UX & Design','Product',[],3)],1),
   m('VP Engineering','Technology',[
     m('System & DevOps Lead','Technology',[],1),
-    m('Quality Assurance Lead','Technology',[],2),
+    m('QA/QC Lead','Technology',[],2),
     m('Spatial Developer Lead','Technology',[],2),
     m('Developer Senior Lead','Technology',[m('Software Engineer Lead','Technology',[],9)],1),
-    m('Head of Big Data','Data',[m('Data GIS Lead','Data',[],10),m('Data Engineering & Analytics Senior Lead','Data',[],6)],2)]),
-  m('Chief of Technology','Technology',[m('Head of PMO','Technology',[],3)],4)
+    m('Head of Big Data','Data',[m('Data Engineering & Analytics Senior Lead','Data',[],6)],2)]),
+  m('Chief Technology Officer','Technology',[m('Head of PMO','Technology',[],3)],4)
  ],4),
  proposed: m('Chief Executive Officer','Leadership',[
   m('Chief Commercial Officer','Commercial',[
     m('Head of Sales','Commercial',[],5),
     m('Marketing & Brand Lead','Commercial',[],3)],1),
-  m('Product & Business Senior Lead','Product',[
-    m('Product Management Lead','Product',[],3),
-    m('Business Insight Senior Lead','Product',[],5),
-    m('Head of UI/UX & Design','Product',[],3)],1),
+  m('Head of Product & Business','Product',[
+    m('Head of UI/UX & Design','Product',[],3)],4),
   m('Chief Technology Officer','Technology',[
-    m('Software Engineering Lead','Technology',[],11),
-    m('Quality & DevOps Lead','Technology',[],4),
-    m('Head of Big Data','Data',[m('Data GIS Lead','Data',[],10),m('Data Engineering & Analytics Senior Lead','Data',[],6)],2),
+    m('Software Engineer Lead','Technology',[],11),
+    m('QA/QC & DevOps Lead','Technology',[],4),
+    m('Head of Big Data','Data',[m('Data Engineering & Analytics Senior Lead','Data',[],6)],2),
     m('Head of PMO','Technology',[],3)]),
-  m('Head of People & Culture','People',[m('General Support Lead','People',[],4)],4),
-  m('Finance, Legal & Investor Relations Lead','Finance',[],4)
+  m('Head of HRBP','People',[m('General Support Lead','People',[],4)],4),
+  m('Head of FA','Finance',[],4)
  ],1)
 };
 const NOTES={
@@ -160,11 +157,12 @@ const NOTES={
  proposed:{title:'What the redesign changes',sub:'Each change answers one finding. Roles move first; people are placed through a fair selection process.'}
 };
 const CHANGES=[
- 'One technology leader instead of two: a Chief Technology Officer leads engineering, data and PMO, so priorities are set in one place.',
- 'A Chief Commercial Officer brings Sales and Marketing & Brand together, so what is sold and what is promoted follow one plan. Product & Business stays with the CEO as the core of the company.',
- 'Removed the single-report layers: the Deputy Head of Sales and the Developer Senior Lead roles merge into the teams they led.',
- 'Corporate functions grouped: Finance, Legal and Investor Relations under one lead; the CEO keeps one Executive Assistant and leads 5 executives instead of 11 people.',
- 'The Software Engineering Lead span (11) sits at the edge of the range on purpose: it is a team of peers working on one codebase, reviewed again after six months.'
+ 'One technology leader instead of two: the Chief Technology Officer leads engineering, data and PMO, and the VP Engineering role merges into it, so priorities are set in one place.',
+ 'A Chief Commercial Officer brings Sales and Marketing & Brand together, so what is sold and what is promoted follow one plan.',
+ 'Titles match levels: the Product & Business Lead and the Head of Product & Business become one division head reporting to the CEO, and the Developer Senior Lead layer merges into the engineering team.',
+ 'Engineering support combined: System & DevOps and QA/QC form one team, and spatial developers join the Software Engineer Lead team.',
+ 'Corporate functions grouped: the Head of FA also covers Legal and Investor Relations, and the CEO keeps one Executive Assistant and leads 5 executives instead of 11 people.',
+ 'The Software Engineer Lead span (11) sits at the edge of the range on purpose: a team of peers on one codebase, reviewed again after six months.'
 ];
 const NARROW=2, WIDE=11;
 function walk(n,depth,out,path){
@@ -189,8 +187,8 @@ function findingsFor(){
   const c=S.current, sp=t=>c.mgr.find(x=>x.t===t).span;
   return [
    `The CEO has ${sp('Chief Executive Officer')} direct reports, mixing division heads with support roles. Too many conversations, too little time for strategy.`,
-   `Technology has two heads (VP Engineering and Chief of Technology) with overlapping scope, so engineering priorities compete instead of aligning.`,
-   `Several layers carry only one report: Head of Sales → Deputy Head of Sales, and Developer Senior Lead → Software Engineer Lead.`,
+   `Technology has two leaders (VP Engineering and Chief Technology Officer) with overlapping scope, so engineering priorities compete instead of aligning.`,
+   `Titles do not match levels: a Head of Product & Business reports to a Product & Business Lead, and a Developer Senior Lead manages only one person.`,
    `${c.narrow} managers lead two people or fewer, a sign of titles created for growth that has not arrived yet.`
   ];
 }
