@@ -587,14 +587,15 @@ body.portfolio{overflow:hidden}
           <div class="vignette"></div>
           <!-- outside: the glass doorway -->
           <button class="hot hot-out" id="doorHot" style="left:41%;top:57%"><span class="ring"></span><span class="tag"><small data-i18n="pf.eyebrow">Portfolio</small><span data-i18n="pf.enter">Step inside</span></span></button>
-          <!-- inside: seven objects (strategic work first) -->
+          <!-- inside: eight objects (strategic work first) -->
           <button class="hot hot-in" data-proj="0" style="left:37.4%;top:53.6%"><span class="ring"></span><span class="tag"><small class="obj">Work desk</small><span class="ttl">HR SuperAgent</span></span></button>
           <button class="hot hot-in" data-proj="1" style="left:52.6%;top:42.2%"><span class="ring"></span><span class="tag"><small class="obj">Staircase</small><span class="ttl">Job Application Tracker</span></span></button>
           <button class="hot hot-in" data-proj="2" style="left:38%;top:42.4%"><span class="ring"></span><span class="tag"><small class="obj">Wall shelf</small><span class="ttl">Team Capability Matrix</span></span></button>
           <button class="hot hot-in left" data-proj="3" style="left:62.4%;top:57.2%"><span class="ring"></span><span class="tag"><small class="obj">Lounge table</small><span class="ttl">HR Analytics Dashboard</span></span></button>
-          <button class="hot hot-in" data-proj="4" style="left:33%;top:47.6%"><span class="ring"></span><span class="tag"><small class="obj">Circle artwork</small><span class="ttl">Athena</span></span></button>
-          <button class="hot hot-in" data-proj="5" style="left:47%;top:46%"><span class="ring"></span><span class="tag"><small class="obj">Indoor tree</small><span class="ttl">Eva’s Digital Studio</span></span></button>
-          <button class="hot hot-in" data-proj="6" style="left:57.8%;top:48.2%"><span class="ring"></span><span class="tag"><small class="obj">Framed picture</small><span class="ttl">AI Creative Reel</span></span></button>
+          <button class="hot hot-in" data-proj="4" style="left:40.2%;top:56.2%"><span class="ring"></span><span class="tag"><small class="obj">Desk chair</small><span class="ttl">Org Design Studio</span></span></button>
+          <button class="hot hot-in" data-proj="5" style="left:33%;top:47.6%"><span class="ring"></span><span class="tag"><small class="obj">Circle artwork</small><span class="ttl">Athena</span></span></button>
+          <button class="hot hot-in" data-proj="6" style="left:47%;top:46%"><span class="ring"></span><span class="tag"><small class="obj">Indoor tree</small><span class="ttl">Eva’s Digital Studio</span></span></button>
+          <button class="hot hot-in" data-proj="7" style="left:57.8%;top:48.2%"><span class="ring"></span><span class="tag"><small class="obj">Framed picture</small><span class="ttl">AI Creative Reel</span></span></button>
         </div>
       </div>
     </div>
@@ -616,22 +617,23 @@ body.portfolio{overflow:hidden}
   <a class="btn btn-ghost back-btn" id="homeBtn" href="index.html" data-i18n="pf.home">← Back to Studio</a>
   <p class="pf-hint" data-i18n="pf.hint"></p>
 
-  <button class="pf-toggle" id="pfToggle" type="button" aria-expanded="false" aria-controls="projects"><span data-i18n="pf.all">All projects</span> <span class="n">(7)</span> <span class="chev" aria-hidden="true">▴</span></button>
+  <button class="pf-toggle" id="pfToggle" type="button" aria-expanded="false" aria-controls="projects"><span data-i18n="pf.all">All projects</span> <span class="n">(8)</span> <span class="chev" aria-hidden="true">▴</span></button>
   <nav class="pf-list" id="projects" aria-label="Projects">
     <span class="label" data-i18n="pf.list">Projects</span>
     <button data-proj="0"><span class="ttl">HR SuperAgent</span></button>
     <button data-proj="1"><span class="ttl">Job Application Tracker</span></button>
     <button data-proj="2"><span class="ttl">Team Capability Matrix</span></button>
     <button data-proj="3"><span class="ttl">HR Analytics Dashboard</span></button>
-    <button data-proj="4"><span class="ttl">Athena</span></button>
-    <button data-proj="5"><span class="ttl">Eva’s Digital Studio</span></button>
-    <button data-proj="6"><span class="ttl">AI Creative Reel</span></button>
+    <button data-proj="4"><span class="ttl">Org Design Studio</span></button>
+    <button data-proj="5"><span class="ttl">Athena</span></button>
+    <button data-proj="6"><span class="ttl">Eva’s Digital Studio</span></button>
+    <button data-proj="7"><span class="ttl">AI Creative Reel</span></button>
   </nav>
 
   <!-- case card -->
   <aside class="card-pf" id="card" hidden aria-labelledby="cTitle" role="dialog">
     <div class="card-top">
-      <span class="meta" id="cCount">01 / 07</span>
+      <span class="meta" id="cCount">01 / 08</span>
       <div class="card-ctl">
         <button id="cPrev" aria-label="Previous project" data-i18n-aria="pf.prev">←</button>
         <button id="cNext" aria-label="Next project">→</button>
@@ -640,6 +642,23 @@ body.portfolio{overflow:hidden}
     </div>
     <div class="scroll">
       <div class="media">
+        <!-- Org Design Studio: current vs proposed structure -->
+        <svg data-media="orgdesign" viewBox="0 0 520 300" role="img" aria-label="A six-layer structure next to a five-layer redesign with healthier spans of control" hidden>
+          <rect width="520" height="300" fill="#343633"/>
+          <g font-family="IBM Plex Mono,monospace" font-size="10" letter-spacing="1.2" fill="#B49A70"><text x="24" y="34">CURRENT · 6 LAYERS</text><text x="282" y="34">PROPOSED · 5 LAYERS</text></g>
+          <g fill="#F2EBDD"><rect x="104" y="52" width="40" height="14" rx="2"/><rect x="362" y="52" width="40" height="14" rx="2"/></g>
+          <g stroke="#7A6340" stroke-width="1.2" fill="none">
+            <path d="M124 66V80M60 80H188M60 80V92M124 80V92M188 80V92"/><path d="M60 106V118M40 118H80M40 118V130M80 118V130"/><path d="M40 144V156M80 144V156"/><path d="M40 170V182M80 170V182"/>
+            <path d="M382 66V80M318 80H446M318 80V92M382 80V92M446 80V92"/><path d="M318 106V118M296 118H340M296 118V130M340 118V130M446 106V118M424 118H468M424 118V130M468 118V130"/><path d="M296 144V156M340 144V156M424 144V156M468 144V156"/>
+          </g>
+          <g fill="#C9C2B5"><rect x="40" y="92" width="40" height="14" rx="2"/><rect x="104" y="92" width="40" height="14" rx="2"/><rect x="168" y="92" width="40" height="14" rx="2"/><rect x="20" y="130" width="40" height="14" rx="2"/><rect x="60" y="130" width="40" height="14" rx="2"/>
+            <rect x="298" y="92" width="40" height="14" rx="2"/><rect x="362" y="92" width="40" height="14" rx="2"/><rect x="426" y="92" width="40" height="14" rx="2"/><rect x="276" y="130" width="40" height="14" rx="2"/><rect x="320" y="130" width="40" height="14" rx="2"/><rect x="404" y="130" width="40" height="14" rx="2"/><rect x="448" y="130" width="40" height="14" rx="2"/></g>
+          <g fill="#9A4A3A"><rect x="20" y="156" width="40" height="14" rx="2"/><rect x="60" y="156" width="40" height="14" rx="2"/><rect x="168" y="92" width="40" height="14" rx="2"/></g>
+          <g fill="#526B59"><rect x="20" y="182" width="40" height="14" rx="2"/><rect x="60" y="182" width="40" height="14" rx="2"/><rect x="276" y="156" width="40" height="14" rx="2"/><rect x="320" y="156" width="40" height="14" rx="2"/><rect x="404" y="156" width="40" height="14" rx="2"/><rect x="448" y="156" width="40" height="14" rx="2"/></g>
+          <path d="M240 140 L268 140" stroke="#B49A70" stroke-width="1.4"/><path d="M262 134 L270 140 L262 146" fill="none" stroke="#B49A70" stroke-width="1.4"/>
+          <g font-family="Inter,sans-serif" font-size="11" fill="#C9C2B5"><text x="24" y="226">12 narrow spans · 1 wide span</text><text x="24" y="246">Store issues pass 3 managers</text><text x="282" y="226">0 spans outside the healthy band</text><text x="282" y="246">One less layer to the front line</text></g>
+          <g font-family="IBM Plex Mono,monospace" font-size="9" fill="#B49A70"><text x="24" y="280">FICTIONAL COMPANY · ILLUSTRATIVE</text></g>
+        </svg>
         <!-- Athena: constellation -->
         <img data-media="athena" src="img/athena-constellation.webp" alt="Athena as an Earth-like planet at the centre, with Hermes, Apollo, Nexus, Iris, Fortuna and Kronos as planets in orbit, and Eva briefing her" width="1280" height="800" loading="lazy">
         <!-- HR SuperAgent: workflow -->
@@ -1051,7 +1070,7 @@ en:{
   title:'Portfolio — Eva Yuliana', skip:'Skip to projects',
   'nav.studio':'Studio','nav.portfolio':'Portfolio','nav.menu':'Menu',
   'pf.eyebrow':'Portfolio · Selected work','pf.h1':'Step inside the studio',
-  'pf.lead':'Seven pieces of work, each waiting on an object in the room. Walk in and choose one.',
+  'pf.lead':'Eight pieces of work, each waiting on an object in the room. Walk in and choose one.',
   'pf.enter':'Step inside','hero.swipe':'Swipe to explore the studio','pf.back':'← Back outside','pf.home':'← Back to Studio','pf.list':'Projects','pf.all':'All projects','pf.close':'Close','pf.next':'Next project','pf.prev':'Previous project',
   'pf.role':'Role','pf.stack':'Built with','pf.status':'Status','pf.hint':'Choose an object in the room — or open All projects below.',
   'aslan.hello':'Aslan · always close','aslan.sub':'My companion, always close','aslan.close':'Close',
@@ -1079,6 +1098,11 @@ en:{
      body:['The dashboard comes in two forms: an interactive version where figures can be edited on screen, and a standalone version where a client uploads a single CSV file and the dashboard is built from it.',
            'The CSV has just four columns — section, name, field and value — so the data is easy to prepare in Excel. It is packaged to deploy on Vercel and comes with a one-page pitch deck. The standalone version is still in private testing.'],
      link:null},
+    {key:'orgdesign', object:'Desk chair', eyebrow:'Organization design · Interactive demo', title:'Org Design Studio', sub:'A structure review that counts layers and spans of control, then tests a redesign before anyone moves.',
+     role:'Designer & builder', stack:'HTML/JS demo · fictional company data', status:'Live demo',
+     body:['It reads a structure the way I do in a review: how many layers sit between the CEO and the front line, how many people each manager leads, and where spans are too narrow or too wide for decisions to move well.',
+           'Switch between the current structure and a proposed redesign to see the effect: fewer layers, healthier spans and every change tied to a finding. The company is fictional. In a real engagement the data comes from the HRIS export, and the redesign is tested with leaders before anything is announced.'],
+     link:{href:'org-design.html', label:'Open the live demo →'}},
     {key:'athena', object:'Circle artwork', eyebrow:'AI system · Personal build', title:'Athena', sub:'A 7-agent AI system with one orchestrator at the centre.',
      role:'Architect & builder', stack:'Claude API · n8n · Notion · HTML/JS', status:'In active development',
      body:['Athena is the single point where my instructions arrive. She holds the full context — goals, constraints, priorities — and delegates work to six specialist agents: Hermes for content, Apollo for research, Nexus for business development, Iris for operations, Fortuna for finance and Kronos for portfolio data.',
@@ -1104,7 +1128,7 @@ id:{
   title:'Portofolio — Eva Yuliana', skip:'Langsung ke proyek',
   'nav.studio':'Studio','nav.portfolio':'Portofolio','nav.menu':'Menu',
   'pf.eyebrow':'Portofolio · Karya pilihan','pf.h1':'Masuki studio',
-  'pf.lead':'Tujuh karya, masing-masing menunggu di sebuah benda di dalam ruangan. Masuklah dan pilih salah satunya.',
+  'pf.lead':'Delapan karya, masing-masing menunggu di sebuah benda di dalam ruangan. Masuklah dan pilih salah satunya.',
   'pf.enter':'Masuk','hero.swipe':'Geser untuk menjelajahi studio','pf.back':'← Kembali ke luar','pf.home':'← Kembali ke Studio','pf.list':'Proyek','pf.all':'Semua proyek','pf.close':'Tutup','pf.next':'Proyek berikutnya','pf.prev':'Proyek sebelumnya',
   'pf.role':'Peran','pf.stack':'Dibangun dengan','pf.status':'Status','pf.hint':'Pilih sebuah benda di ruangan — atau buka Semua proyek di bawah.',
   'aslan.hello':'Aslan · selalu dekat','aslan.sub':'Pendamping saya, selalu dekat','aslan.close':'Tutup',
@@ -1132,6 +1156,11 @@ id:{
      body:['Dasbor ini hadir dalam dua bentuk: versi interaktif yang angkanya bisa diubah langsung di layar, dan versi mandiri tempat klien cukup mengunggah satu file CSV lalu dasbor dibangun dari data itu.',
            'CSV-nya hanya berisi empat kolom — section, name, field, dan value — sehingga datanya mudah disiapkan di Excel. Dasbor dikemas agar bisa di-deploy ke Vercel dan dilengkapi pitch deck satu halaman. Versi mandirinya masih diuji secara privat.'],
      link:null},
+    {key:'orgdesign', object:'Kursi kerja', eyebrow:'Desain organisasi · Demo interaktif', title:'Org Design Studio', sub:'Tinjauan struktur yang menghitung lapisan dan rentang kendali, lalu menguji desain baru sebelum ada yang dipindahkan.',
+     role:'Perancang & pembuat', stack:'Demo HTML/JS · data perusahaan fiktif', status:'Demo langsung',
+     body:['Demo ini membaca struktur seperti yang saya lakukan saat meninjau organisasi: berapa lapisan antara CEO dan garis depan, berapa orang yang dipimpin setiap manajer, dan di mana rentang kendali terlalu sempit atau terlalu lebar sehingga keputusan berjalan lambat.',
+           'Bandingkan struktur saat ini dengan usulan desain baru untuk melihat dampaknya: lapisan lebih sedikit, rentang kendali lebih sehat, dan setiap perubahan terkait dengan satu temuan. Perusahaannya fiktif. Dalam proyek nyata, datanya berasal dari ekspor HRIS, dan desain baru diuji bersama para pemimpin sebelum diumumkan.'],
+     link:{href:'org-design.html', label:'Buka demo langsung →'}},
     {key:'athena', object:'Lukisan lingkaran', eyebrow:'Sistem AI · Karya pribadi', title:'Athena', sub:'Sistem AI 7 agen dengan satu orkestrator di pusatnya.',
      role:'Arsitek & pembangun', stack:'Claude API · n8n · Notion · HTML/JS', status:'Dalam pengembangan aktif',
      body:['Athena adalah satu titik tempat semua arahan saya masuk. Ia memegang konteks penuh — tujuan, kendala, prioritas — dan mendelegasikan pekerjaan ke enam agen spesialis: Hermes untuk konten, Apollo untuk riset, Nexus untuk pengembangan bisnis, Iris untuk operasional, Fortuna untuk keuangan, dan Kronos untuk data portofolio.',
@@ -1157,7 +1186,7 @@ zh:{
   title:'作品集 — Eva Yuliana', skip:'跳至项目',
   'nav.studio':'工作室','nav.portfolio':'作品集','nav.menu':'菜单',
   'pf.eyebrow':'作品集 · 精选项目','pf.h1':'走进工作室',
-  'pf.lead':'七个作品，各自藏在房间里的一件物品中。走进来，选择一个。',
+  'pf.lead':'八个作品，各自藏在房间里的一件物品中。走进来，选择一个。',
   'pf.enter':'走进去','hero.swipe':'滑动探索工作室','pf.back':'← 回到室外','pf.home':'← 回到工作室','pf.list':'项目','pf.all':'全部项目','pf.close':'关闭','pf.next':'下一个项目','pf.prev':'上一个项目',
   'pf.role':'角色','pf.stack':'使用工具','pf.status':'状态','pf.hint':'选择房间里的一件物品，或打开下方的“全部项目”。',
   'aslan.hello':'Aslan · 始终相伴','aslan.sub':'我的伙伴，始终相伴','aslan.close':'关闭',
@@ -1185,6 +1214,11 @@ zh:{
      body:['仪表板有两种形式：可在屏幕上直接修改数据的交互版，以及独立版——客户只需上传一个CSV文件，仪表板即据此生成。',
            'CSV只有四列（section、name、field、value），在Excel中即可轻松准备数据。仪表板已打包，可部署至Vercel，并附一页式推介简报。独立版目前仍在内部测试。'],
      link:null},
+    {key:'orgdesign', object:'办公椅', eyebrow:'组织设计 · 互动演示', title:'Org Design Studio', sub:'一次组织结构诊断：统计层级与管理幅度，并在任何调整之前先测试新的设计方案。',
+     role:'设计与搭建', stack:'HTML/JS演示 · 虚构公司数据', status:'在线演示',
+     body:['它按照我做组织诊断的方式解读结构：从CEO到一线之间有多少层级，每位管理者带多少人，以及哪些管理幅度过窄或过宽，导致决策难以顺畅推进。',
+           '在现有结构与新设计方案之间切换，即可看到效果：层级更少、管理幅度更健康，每一项调整都对应一项诊断发现。公司为虚构。在真实项目中，数据来自HRIS导出，新方案会先与管理层共同验证，再正式公布。'],
+     link:{href:'org-design.html', label:'打开在线演示 →'}},
     {key:'athena', object:'圆形画作', eyebrow:'AI系统 · 个人项目', title:'Athena', sub:'以一位协调者为核心的七智能体AI系统。',
      role:'架构设计与搭建', stack:'Claude API · n8n · Notion · HTML/JS', status:'持续开发中',
      body:['Athena是我所有指令的唯一入口。她掌握完整的上下文——目标、约束与优先级——并将工作分派给六位专业智能体：Hermes负责内容，Apollo负责研究，Nexus负责业务拓展，Iris负责运营，Fortuna负责财务，Kronos负责投资组合数据。',
